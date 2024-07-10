@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
+#include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -37,6 +38,8 @@ APlayerCharacter::APlayerCharacter()
 	Camera->bUsePawnControlRotation = true;
 
 	AddObjComp = CreateDefaultSubobject<UAddObjectComponent>(TEXT("AddObjComp"));
+
+	PlaceObjComp = CreateDefaultSubobject<UPlaceToolComponent>(TEXT("PlaceToolComp"));
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +54,13 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	//deactivate all tools
+	AddObjComp->Deactivate();
+	PlaceObjComp->Deactivate();
+
+	//reacivate the add tool as being the base when the game starts
+	AddObjComp->Activate();
 }
 
 // Called every frame

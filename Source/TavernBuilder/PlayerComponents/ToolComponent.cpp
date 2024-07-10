@@ -10,7 +10,6 @@
 #define GET_PLAYER_CONTROLLER Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController())
 #define GET_ENHANCED_INPUT_LOCAL_PLAYER_SUBSYSTEM ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GET_PLAYER_CONTROLLER->GetLocalPlayer())
 
-
 // Sets default values for this component's properties
 UToolComponent::UToolComponent()
 {
@@ -18,7 +17,8 @@ UToolComponent::UToolComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	OnComponentActivated.AddDynamic(this, &UToolComponent::OnActivate);
+	OnComponentDeactivated.AddDynamic(this, &UToolComponent::OnDeactivate);
 }
 
 
@@ -26,12 +26,6 @@ UToolComponent::UToolComponent()
 void UToolComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	OnComponentActivated.AddDynamic(this, &UToolComponent::OnActivate);
-	OnComponentDeactivated.AddDynamic(this, &UToolComponent::OnDeactivate);
-
-	OnActivate(this, false);
 }
 
 
@@ -74,7 +68,10 @@ void UToolComponent::OnDeactivate(UActorComponent* Comp)
 	{
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(Player->InputComponent))
 		{
-			EnhancedInputComponent->RemoveBinding(*PrimaryActionBind);
+			if (PrimaryActionBind)
+			{
+				EnhancedInputComponent->RemoveBinding(*PrimaryActionBind);
+			}
 		}
 	}
 }

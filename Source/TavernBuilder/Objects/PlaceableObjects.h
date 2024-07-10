@@ -19,6 +19,7 @@ public:
 	APlaceableObjects();
 
 	virtual void Tick(float DeltaTime) override;
+	double GetMeshHeight() const { return Mesh->GetStaticMesh()->GetBounds().BoxExtent.Z; }
 
 protected:
 	virtual void BeginPlay() override;

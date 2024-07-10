@@ -3,6 +3,7 @@
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 #include "TavernBuilder/Objects/PlaceableObjects.h"
 #include "TavernBuilder/Character/PlayerCharacter.h"
+#include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 
 void UAddObjectComponent::BeginPlay()
 {
@@ -18,5 +19,12 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 
 	FRotator Rotation = FRotator::ZeroRotator;
 
-	GetWorld()->SpawnActor<APlaceableObjects>(ObjectToSpawn, SpawnLocation, Rotation);
+	APlaceableObjects* SpawnedObj = GetWorld()->SpawnActor<APlaceableObjects>(ObjectToSpawn, SpawnLocation, Rotation);
+	UPlaceToolComponent* PlaceTool = GetOwner()->GetComponentByClass<UPlaceToolComponent>();
+
+	UE_LOG(LogTemp, Warning, TEXT("Created"))
+
+	PlaceTool->Activate();
+	PlaceTool->SetMovingObj(SpawnedObj);
+	Deactivate();
 }

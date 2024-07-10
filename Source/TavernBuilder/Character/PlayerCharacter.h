@@ -11,6 +11,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UAddObjectComponent;
+class UPlaceToolComponent;
 
 UCLASS()
 class TAVERNBUILDER_API APlayerCharacter : public ACharacter
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UAddObjectComponent* AddObjComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	UPlaceToolComponent* PlaceObjComp;
 
 public:
 	APlayerCharacter();

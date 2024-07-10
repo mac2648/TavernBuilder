@@ -22,6 +22,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* PrimaryInputAction;
+
 	FInputBindingHandle* PrimaryActionBind;
 
 public:	
