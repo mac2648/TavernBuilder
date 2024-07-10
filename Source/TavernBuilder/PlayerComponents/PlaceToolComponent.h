@@ -23,7 +23,7 @@ protected:
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetMovingObj(APlaceableObjects* ObjToMove) { MovingObj = ObjToMove; }
+	void SetMovingObj(APlaceableObjects* ObjToMove);
 
 protected:
 	virtual void Execute(const FInputActionValue& Value) override;

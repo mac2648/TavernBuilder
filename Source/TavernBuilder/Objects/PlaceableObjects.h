@@ -20,6 +20,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	double GetMeshHeight() const { return Mesh->GetStaticMesh()->GetBounds().BoxExtent.Z; }
+	UStaticMeshComponent* GetMesh() const { return Mesh; }
 
 protected:
 	virtual void BeginPlay() override;

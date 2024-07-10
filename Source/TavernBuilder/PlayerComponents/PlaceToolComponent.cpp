@@ -30,10 +30,20 @@ void UPlaceToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	}
 }
 
+void UPlaceToolComponent::SetMovingObj(APlaceableObjects* ObjToMove)
+{
+	MovingObj = ObjToMove; 
+	if (MovingObj)
+	{
+		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
 void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 {
 	if (MovingObj)
 	{
+		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		MovingObj = nullptr;
 	}
 	else
@@ -48,7 +58,7 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
-			MovingObj = Obj;
+			SetMovingObj(Obj);
 		}
 	}
 }
@@ -59,6 +69,6 @@ void UPlaceToolComponent::SecondaryExecute(const FInputActionValue& Value)
 
 	if (MovingObj)
 	{
-		MovingObj->AddActorWorldRotation(FRotator(RotationValue, 0, 0));
+		MovingObj->AddActorWorldRotation(FRotator(0, RotationValue * 10, 0));
 	}
 }
