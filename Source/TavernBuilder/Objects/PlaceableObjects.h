@@ -10,17 +10,17 @@ UCLASS()
 class TAVERNBUILDER_API APlaceableObjects : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	APlaceableObjects();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* Mesh;
+	
 public:	
-	// Called every frame
+	APlaceableObjects();
+
 	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
 
 };

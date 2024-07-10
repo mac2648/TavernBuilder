@@ -10,6 +10,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UAddObjectComponent;
 
 UCLASS()
 class TAVERNBUILDER_API APlayerCharacter : public ACharacter
@@ -29,6 +30,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* LookAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	UAddObjectComponent* AddObjComp;
 
 public:
 	APlayerCharacter();

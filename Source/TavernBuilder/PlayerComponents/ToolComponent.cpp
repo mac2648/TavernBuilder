@@ -1,6 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TavernBuilder/PlayerComponents/ToolComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
+#include "TavernBuilder/Character/PlayerCharacter.h"
+
+#define GET_PLAYER_CONTROLLER Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController())
+#define GET_ENHANCED_INPUT_LOCAL_PLAYER_SUBSYSTEM ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GET_PLAYER_CONTROLLER->GetLocalPlayer())
+
 
 // Sets default values for this component's properties
 UToolComponent::UToolComponent()
@@ -19,7 +28,10 @@ void UToolComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	OnComponentActivated.AddDynamic(this, &UToolComponent::OnActivate);
+	OnComponentDeactivated.AddDynamic(this, &UToolComponent::OnDeactivate);
+
+	OnActivate(this, false);
 }
 
 
@@ -31,3 +43,43 @@ void UToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
+void UToolComponent::OnActivate(UActorComponent* Comp, bool IsReset)
+{
+	UEnhancedInputLocalPlayerSubsystem* SubSystem = GET_ENHANCED_INPUT_LOCAL_PLAYER_SUBSYSTEM;
+
+	if (SubSystem)
+	{
+		SubSystem->AddMappingContext(ToolMappingContext, 1);
+	}
+
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
+	{
+		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(Player->InputComponent))
+		{
+			PrimaryActionBind = &EnhancedInputComponent->BindAction(PrimaryInputAction, ETriggerEvent::Triggered, this, &UToolComponent::Execute);
+		}
+	}
+}
+
+void UToolComponent::OnDeactivate(UActorComponent* Comp)
+{
+	UEnhancedInputLocalPlayerSubsystem* SubSystem = GET_ENHANCED_INPUT_LOCAL_PLAYER_SUBSYSTEM;
+
+	if (SubSystem)
+	{
+		SubSystem->RemoveMappingContext(ToolMappingContext);
+	}
+
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)))
+	{
+		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(Player->InputComponent))
+		{
+			EnhancedInputComponent->RemoveBinding(*PrimaryActionBind);
+		}
+	}
+}
+
+void UToolComponent::Execute(const FInputActionValue& Value)
+{
+
+}

@@ -9,9 +9,19 @@
 /**
  * 
  */
+
+class APlaceableObjects;
 UCLASS()
 class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APlaceableObjects> ObjectToSpawn;
+
+protected:
+	virtual void BeginPlay() override;
 	
+	virtual void Execute(const FInputActionValue& Value) override;
 };

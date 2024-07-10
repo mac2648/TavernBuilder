@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -35,6 +36,7 @@ APlayerCharacter::APlayerCharacter()
 	Camera->SetupAttachment(ACharacter::GetMesh());
 	Camera->bUsePawnControlRotation = true;
 
+	AddObjComp = CreateDefaultSubobject<UAddObjectComponent>(TEXT("AddObjComp"));
 }
 
 // Called when the game starts or when spawned
