@@ -32,10 +32,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* LookAction;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAddObjectComponent* AddObjComp;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UPlaceToolComponent* PlaceObjComp;
 
 public:

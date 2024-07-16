@@ -11,6 +11,7 @@
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 
+
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
@@ -67,7 +68,6 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
