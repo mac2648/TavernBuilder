@@ -11,6 +11,7 @@
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "TavernBuilder/PlayerComponents/DeleteToolComponent.h"
 
 
 // Sets default values
@@ -42,6 +43,8 @@ APlayerCharacter::APlayerCharacter()
 	AddObjComp = CreateDefaultSubobject<UAddObjectComponent>(TEXT("AddObjComp"));
 
 	PlaceObjComp = CreateDefaultSubobject<UPlaceToolComponent>(TEXT("PlaceToolComp"));
+
+	DeleteObjComp = CreateDefaultSubobject<UDeleteToolComponent>(TEXT("DeleteToolComp"));
 }
 
 // Called when the game starts or when spawned
@@ -61,6 +64,7 @@ void APlayerCharacter::BeginPlay()
 	//deactivate all tools
 	AddObjComp->Deactivate();
 	PlaceObjComp->Deactivate();
+	DeleteObjComp->Deactivate();
 
 	//reacivate the add tool as being the base when the game starts
 	AddObjComp->Activate();
@@ -169,6 +173,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		PlaceObjComp->Deactivate();
 		break;
 	case DELETE:
+		DeleteObjComp->Deactivate();
 		break;
 	case PAINT:
 		break;
@@ -191,6 +196,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		PlaceObjComp->Activate();
 		break;
 	case DELETE:
+		DeleteObjComp->Activate();
 		break;
 	case PAINT:
 		break;

@@ -12,6 +12,7 @@ class UInputAction;
 struct FInputActionValue;
 class UAddObjectComponent;
 class UPlaceToolComponent;
+class UDeleteToolComponent;
 
 UENUM(BlueprintType)
 enum ETools
@@ -52,6 +53,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UPlaceToolComponent* PlaceObjComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UDeleteToolComponent* DeleteObjComp;
 
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> ChooseToolWidgetClass;

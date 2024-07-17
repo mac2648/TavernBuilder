@@ -22,6 +22,8 @@ public:
 	double GetMeshHeight() const { return Mesh->GetStaticMesh()->GetBounds().BoxExtent.Z; }
 	UStaticMeshComponent* GetMesh() const { return Mesh; }
 
+	void Delete();
+
 protected:
 	virtual void BeginPlay() override;
 

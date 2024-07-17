@@ -26,3 +26,7 @@ void APlaceableObjects::Tick(float DeltaTime)
 
 }
 
+void APlaceableObjects::Delete()
+{
+	Destroy();
+}
