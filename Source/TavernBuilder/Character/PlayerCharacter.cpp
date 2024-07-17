@@ -51,6 +51,7 @@ void APlayerCharacter::BeginPlay()
 	
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
@@ -150,4 +151,58 @@ void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
 			}
 		}
 	}
+}
+
+void APlayerCharacter::ActivateTool(ETools Tool)
+{
+	if (Tool == CurrentTool)
+	{
+		return;
+	}
+
+	switch (CurrentTool)
+	{
+	case ADD:
+		AddObjComp->Deactivate();
+		break;
+	case MOVE:
+		PlaceObjComp->Deactivate();
+		break;
+	case DELETE:
+		break;
+	case PAINT:
+		break;
+	case CHANGE_DESIGN:
+		break;
+	case CLEAN:
+		break;
+	case GARBAGE:
+		break;
+	default:
+		break;
+	}
+
+	switch (Tool)
+	{
+	case ADD:
+		AddObjComp->Activate();
+		break;
+	case MOVE:
+		PlaceObjComp->Activate();
+		break;
+	case DELETE:
+		break;
+	case PAINT:
+		break;
+	case CHANGE_DESIGN:
+		break;
+	case CLEAN:
+		break;
+	case GARBAGE:
+		break;
+	default:
+		break;
+	}
+
+	CurrentTool = Tool;
 }

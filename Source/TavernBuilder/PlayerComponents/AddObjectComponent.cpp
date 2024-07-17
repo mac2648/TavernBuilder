@@ -12,7 +12,9 @@ void UAddObjectComponent::BeginPlay()
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
 {
-	FVector FowardVector = Cast<APlayerCharacter>(GetOwner())->GetControlRotation().Vector();
+	APlayerCharacter* Player = Cast<APlayerCharacter>(GetOwner());
+
+	FVector FowardVector = Player->GetControlRotation().Vector();
 	FowardVector.Z = 0;
 	FVector SpawnLocation = GetOwner()->GetActorLocation() + FowardVector * 50;
 	SpawnLocation.Z += 50;
@@ -20,11 +22,9 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 	FRotator Rotation = FRotator::ZeroRotator;
 
 	APlaceableObjects* SpawnedObj = GetWorld()->SpawnActor<APlaceableObjects>(ObjectToSpawn, SpawnLocation, Rotation);
-	UPlaceToolComponent* PlaceTool = GetOwner()->GetComponentByClass<UPlaceToolComponent>();
+	UPlaceToolComponent* PlaceTool = Player->GetPlaceToolComp();
 
-	UE_LOG(LogTemp, Warning, TEXT("Created"))
+	Player->ActivateTool(ETools::MOVE);
 
-	PlaceTool->Activate();
 	PlaceTool->SetMovingObj(SpawnedObj);
-	Deactivate();
 }

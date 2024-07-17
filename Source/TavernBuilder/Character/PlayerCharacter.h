@@ -13,6 +13,18 @@ struct FInputActionValue;
 class UAddObjectComponent;
 class UPlaceToolComponent;
 
+UENUM(BlueprintType)
+enum ETools
+{
+	ADD,
+	MOVE,
+	DELETE,
+	PAINT,
+	CHANGE_DESIGN,
+	CLEAN,
+	GARBAGE
+};
+
 UCLASS()
 class TAVERNBUILDER_API APlayerCharacter : public ACharacter
 {
@@ -46,13 +58,25 @@ protected:
 
 	UUserWidget* ChooseToolWidget = nullptr;
 
+	ETools CurrentTool = ADD;
+
 public:
 	APlayerCharacter();
+
+	UFUNCTION(BlueprintCallable)
+	inline ETools GetCurrentTool() const { return CurrentTool; }
+
+	UFUNCTION(BlueprintCallable)
+	void ActivateTool(ETools Tool);
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return Camera; }
+
+	/*do not use this function to Activate or Deactivate the component
+	all components must be activated or deactivated by the function ActivateTool*/
+	inline UPlaceToolComponent* GetPlaceToolComp() const { return PlaceObjComp; }
 
 protected:
 	virtual void BeginPlay() override;
