@@ -173,6 +173,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		PlaceObjComp->Deactivate();
 		break;
 	case DELETE:
+		DeleteObjComp->Deactivate();
 		break;
 	case PAINT:
 		break;
@@ -195,6 +196,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		PlaceObjComp->Activate();
 		break;
 	case DELETE:
+		DeleteObjComp->Activate();
 		break;
 	case PAINT:
 		break;
