@@ -32,11 +32,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* LookAction;
 
+	UPROPERTY(EditDefaultsOnly, category = "Input")
+	UInputAction* OpenChooseToolWidgetAction;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAddObjectComponent* AddObjComp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UPlaceToolComponent* PlaceObjComp;
+
+	UPROPERTY(EditDefaultsOnly, category = "UI")
+	TSubclassOf<UUserWidget> ChooseToolWidgetClass;
+
+	UUserWidget* ChooseToolWidget = nullptr;
 
 public:
 	APlayerCharacter();
@@ -51,4 +59,5 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void OpenCloseChooseToolWidget(const FInputActionValue& Value);
 };

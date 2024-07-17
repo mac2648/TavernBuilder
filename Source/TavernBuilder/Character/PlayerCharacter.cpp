@@ -10,6 +10,7 @@
 #include "InputActionValue.h"
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
+#include "Blueprint/UserWidget.h"
 
 
 // Sets default values
@@ -62,6 +63,14 @@ void APlayerCharacter::BeginPlay()
 
 	//reacivate the add tool as being the base when the game starts
 	AddObjComp->Activate();
+
+	//creates the choose tools widget
+	ChooseToolWidget = CreateWidget<UUserWidget>(Cast<APlayerController>(GetController()), ChooseToolWidgetClass);
+	if (ChooseToolWidget)
+	{
+		ChooseToolWidget->AddToViewport();
+		ChooseToolWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 // Called every frame
@@ -79,6 +88,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(OpenChooseToolWidgetAction, ETriggerEvent::Triggered, this, &APlayerCharacter::OpenCloseChooseToolWidget);
 	}
 	else
 	{
@@ -115,5 +125,29 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxis.X);
 		AddControllerPitchInput(LookAxis.Y);
+	}
+}
+
+void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
+{
+	bool Open = Value.Get<bool>();
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (Open)
+		{
+			PlayerController->SetInputMode(FInputModeGameAndUI());
+			if (ChooseToolWidget)
+			{
+				ChooseToolWidget->SetVisibility(ESlateVisibility::Visible);
+			}
+		}
+		else
+		{
+			PlayerController->SetInputMode(FInputModeGameOnly());
+			if (ChooseToolWidget)
+			{
+				ChooseToolWidget->SetVisibility(ESlateVisibility::Hidden);
+			}
+		}
 	}
 }

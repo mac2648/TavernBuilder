@@ -17,9 +17,7 @@ double UTavernBuilderUtils::GetMouseAngleFromScreenCenter()
 	Mouse -= ViewportSize / 2;
 
 	double Hipotenuse = FMath::Sqrt(FMath::Pow(Mouse.X, 2) + FMath::Pow(Mouse.Y, 2));
-	UE_LOG(LogTemp, Warning, TEXT("Hipotenuse: %f"), Hipotenuse);
 	double Sin = (Mouse.Y / Hipotenuse);
-	UE_LOG(LogTemp, Warning, TEXT("Sin: %f"), Sin);
 
 	double Angle = FMath::Abs(FMath::Asin(Sin) * 2 / UE_PI) * 90;
 
