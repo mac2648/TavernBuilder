@@ -31,9 +31,13 @@ public:
 
 	void AttachObj(APlaceableObjects* NewObj);
 	void DetachObj(APlaceableObjects* RemovedObj);
-	void SetParentObj(APlaceableObjects* Parent);
+
+	APlaceableObjects* GetParentObj() const { return ParentObj; }
+
 
 protected:
 	virtual void BeginPlay() override;
 
+	void SetParentObj(APlaceableObjects* Parent);
+	void RemoveParentObj();
 };

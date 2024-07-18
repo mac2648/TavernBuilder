@@ -62,14 +62,23 @@ void APlaceableObjects::AttachObj(APlaceableObjects* NewObj)
 	FVector RelativePosition = NewObj->GetActorLocation() - GetActorLocation();
 
 	AttachedObjs.Add(NewObj, RelativePosition);
+
+	NewObj->SetParentObj(this);
 }
 
 void APlaceableObjects::DetachObj(APlaceableObjects* RemovedObj)
 {
 	AttachedObjs.Remove(RemovedObj);
+
+	RemovedObj->RemoveParentObj();
 }
 
 void APlaceableObjects::SetParentObj(APlaceableObjects* Parent)
 {
 	ParentObj = Parent;
+}
+
+void APlaceableObjects::RemoveParentObj()
+{
+	ParentObj = nullptr;
 }
