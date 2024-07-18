@@ -2,6 +2,9 @@
 
 
 #include "TavernBuilder/Utils/TavernBuilderUtils.h"
+#include "Kismet/GameplayStatics.h"
+#include "TavernBuilder/Character/PlayerCharacter.h"
+#include "Camera/CameraComponent.h"
 
 double UTavernBuilderUtils::GetMouseAngleFromScreenCenter()
 {
@@ -39,4 +42,16 @@ double UTavernBuilderUtils::GetMouseAngleFromScreenCenter()
 	}
 
 	return Angle;
+}
+
+void UTavernBuilderUtils::RaycastFromPlayerView(FHitResult& OutHit, FCollisionQueryParams& QueryParams, UObject* WorldContextObject)
+{
+	APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(WorldContextObject, 0));
+
+	FVector Start = Player->GetFollowCamera()->GetComponentLocation();
+	FVector LookingDirection = Player->GetControlRotation().Vector();
+
+	FVector End = Start + LookingDirection * 1000000;
+
+	WorldContextObject->GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
 }

@@ -2,29 +2,22 @@
 
 
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
-#include "TavernBuilder/Character/PlayerCharacter.h"
 #include "TavernBuilder/Objects/PlaceableObjects.h"
-#include "Camera/CameraComponent.h"
 #include "InputActionValue.h"
+#include "TavernBuilder/Utils/TavernBuilderUtils.h"
 
 void UPlaceToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	if (MovingObj)
 	{
-		FVector Start = Cast<APlayerCharacter>(GetOwner())->GetFollowCamera()->GetComponentLocation();
-		FVector LookingDirection = Cast<APlayerCharacter>(GetOwner())->GetControlRotation().Vector();
-
-		FVector End = Start + LookingDirection * 1000000;
+		FHitResult OutHit;
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MovingObj);
 
-		FHitResult OutHit;
-		GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility , QueryParams);
+		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
 
 		FVector MoveLocation = OutHit.Location;
-		
-		//MoveLocation.Z += MovingObj->GetMeshHeight();
 
 		MovingObj->Move(MoveLocation);
 	}
@@ -43,22 +36,31 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 {
 	if (MovingObj)
 	{
+		FHitResult OutHit;
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(MovingObj);
+
+		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
+
+		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
+		{
+			Obj->AttachObj(MovingObj);
+		}
+
 		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		MovingObj = nullptr;
 	}
 	else
 	{
-		FVector Start = Cast<APlayerCharacter>(GetOwner())->GetFollowCamera()->GetComponentLocation();
-		FVector LookingDirection = Cast<APlayerCharacter>(GetOwner())->GetControlRotation().Vector();
-
-		FVector End = Start + LookingDirection * 1000000;
-
 		FHitResult OutHit;
-		GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility);
+		FCollisionQueryParams QueryParams;
+
+		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
 
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
 			SetMovingObj(Obj);
+			Obj->GetParentObj()->DetachObj(Obj);
 		}
 	}
 }
