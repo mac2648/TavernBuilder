@@ -14,6 +14,10 @@ class TAVERNBUILDER_API APlaceableObjects : public AActor
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
+
+	TMap<APlaceableObjects*, FVector> AttachedObjs;
+
+	APlaceableObjects* ParentObj = nullptr;
 	
 public:	
 	APlaceableObjects();
@@ -23,6 +27,11 @@ public:
 	UStaticMeshComponent* GetMesh() const { return Mesh; }
 
 	void Delete();
+	void Move(const FVector& NewWorldLocation);
+
+	void AttachObj(APlaceableObjects* NewObj);
+	void DetachObj(APlaceableObjects* RemovedObj);
+	void SetParentObj(APlaceableObjects* Parent);
 
 protected:
 	virtual void BeginPlay() override;

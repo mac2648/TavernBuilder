@@ -28,5 +28,48 @@ void APlaceableObjects::Tick(float DeltaTime)
 
 void APlaceableObjects::Delete()
 {
+	if (ParentObj)
+	{
+		ParentObj->DetachObj(this);
+	}
+
+	TArray<APlaceableObjects*> ChildObjs;
+	AttachedObjs.GetKeys(ChildObjs);
+
+	for (APlaceableObjects* Obj : ChildObjs)
+	{
+		Obj->Delete();
+	}
+
 	Destroy();
+}
+
+void APlaceableObjects::Move(const FVector& NewWorldLocation)
+{
+	SetActorLocation(NewWorldLocation);
+
+	TArray<APlaceableObjects*> ChildObjs;
+	AttachedObjs.GetKeys(ChildObjs);
+
+	for (APlaceableObjects* Obj : ChildObjs)
+	{
+		Obj->Move(NewWorldLocation + AttachedObjs[Obj]);
+	}
+}
+
+void APlaceableObjects::AttachObj(APlaceableObjects* NewObj)
+{
+	FVector RelativePosition = NewObj->GetActorLocation() - GetActorLocation();
+
+	AttachedObjs.Add(NewObj, RelativePosition);
+}
+
+void APlaceableObjects::DetachObj(APlaceableObjects* RemovedObj)
+{
+	AttachedObjs.Remove(RemovedObj);
+}
+
+void APlaceableObjects::SetParentObj(APlaceableObjects* Parent)
+{
+	ParentObj = Parent;
 }

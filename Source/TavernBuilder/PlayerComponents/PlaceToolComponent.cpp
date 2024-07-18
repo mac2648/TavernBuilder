@@ -26,7 +26,7 @@ void UPlaceToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		
 		//MoveLocation.Z += MovingObj->GetMeshHeight();
 
-		MovingObj->SetActorLocation(MoveLocation);
+		MovingObj->Move(MoveLocation);
 	}
 }
 
