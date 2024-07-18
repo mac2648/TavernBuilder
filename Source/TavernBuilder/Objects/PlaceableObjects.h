@@ -34,6 +34,8 @@ public:
 
 	APlaceableObjects* GetParentObj() const { return ParentObj; }
 
+	void GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) const;
+
 
 protected:
 	virtual void BeginPlay() override;

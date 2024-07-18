@@ -15,6 +15,14 @@ void UPlaceToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MovingObj);
 
+		TArray<APlaceableObjects*> AttachedObjs;
+		MovingObj->GetAttachedObjs(AttachedObjs);
+
+		for (APlaceableObjects* Obj : AttachedObjs)
+		{
+			QueryParams.AddIgnoredActor(Obj);
+		}
+
 		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
 
 		FVector MoveLocation = OutHit.Location;
@@ -40,6 +48,14 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MovingObj);
 
+		TArray<APlaceableObjects*> AttachedObjs;
+		MovingObj->GetAttachedObjs(AttachedObjs);
+
+		for (APlaceableObjects* Obj : AttachedObjs)
+		{
+			QueryParams.AddIgnoredActor(Obj);
+		}
+
 		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
 
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
@@ -60,7 +76,11 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
 			SetMovingObj(Obj);
-			Obj->GetParentObj()->DetachObj(Obj);
+
+			if (APlaceableObjects* ParentObj = Obj->GetParentObj())
+			{
+				ParentObj->DetachObj(Obj);
+			}
 		}
 	}
 }

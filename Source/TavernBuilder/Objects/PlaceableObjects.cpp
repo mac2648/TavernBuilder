@@ -82,3 +82,16 @@ void APlaceableObjects::RemoveParentObj()
 {
 	ParentObj = nullptr;
 }
+
+void APlaceableObjects::GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) const
+{
+	TArray<APlaceableObjects*> ChildObjs;
+	AttachedObjs.GetKeys(ChildObjs);
+
+	for (APlaceableObjects* Obj : ChildObjs)
+	{
+		OutObjs.Add(Obj);
+		Obj->GetAttachedObjs(OutObjs);
+	}
+	
+}
