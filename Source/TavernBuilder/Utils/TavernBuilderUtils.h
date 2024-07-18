@@ -20,5 +20,7 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable)
 	static double GetMouseAngleFromScreenCenter();
+
+	static void RaycastFromPlayerView(FHitResult& OutHit, FCollisionQueryParams& QueryParams, UObject* WorldContextObject);
 	
 };
