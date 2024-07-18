@@ -37,6 +37,14 @@ void UPlaceToolComponent::SetMovingObj(APlaceableObjects* ObjToMove)
 	if (MovingObj)
 	{
 		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		TArray<APlaceableObjects*> AttachedObjs;
+		MovingObj->GetAttachedObjs(AttachedObjs);
+
+		for (APlaceableObjects* Obj : AttachedObjs)
+		{
+			Obj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
 	}
 }
 
@@ -61,6 +69,11 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
 			Obj->AttachObj(MovingObj);
+		}
+
+		for (APlaceableObjects* Obj : AttachedObjs)
+		{
+			Obj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		}
 
 		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
