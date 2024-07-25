@@ -9,8 +9,36 @@
 /**
  * 
  */
-
 class APlaceableObjects;
+
+UENUM(BlueprintType)
+enum EObjectCategory
+{
+	Chair,
+	Table
+};
+
+USTRUCT(BlueprintType)
+struct FObjectInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	FName Name;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APlaceableObjects> Class;
+
+	UPROPERTY(EditAnywhere)
+	TArray<UMaterialInstance*> Materials;
+
+	UPROPERTY(EditAnywhere)
+	int32 Cost;
+
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<EObjectCategory> Category;
+};
+
 UCLASS()
 class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 {
@@ -19,6 +47,9 @@ class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APlaceableObjects> ObjectToSpawn;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FObjectInfo> PlaceableObjectsList;
 
 protected:
 	virtual void BeginPlay() override;
