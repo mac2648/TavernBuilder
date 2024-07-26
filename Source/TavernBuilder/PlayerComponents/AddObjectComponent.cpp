@@ -4,10 +4,14 @@
 #include "TavernBuilder/Objects/PlaceableObjects.h"
 #include "TavernBuilder/Character/PlayerCharacter.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
+#include "TavernBuilder/UI/UserWidget/AddObjectWidget.h"
 
 void UAddObjectComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AddObjWidget = CreateWidget<UAddObjectWidget>(GetWorld(), UAddObjectWidget::StaticClass());
+
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)

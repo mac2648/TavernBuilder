@@ -10,6 +10,7 @@
  * 
  */
 class APlaceableObjects;
+class UAddObjectWidget;
 
 UENUM(BlueprintType)
 enum EObjectCategory
@@ -24,7 +25,7 @@ struct FObjectInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	FName Name;
+	FText Name;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APlaceableObjects> Class;
@@ -50,6 +51,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FObjectInfo> PlaceableObjectsList;
+
+	UAddObjectWidget* AddObjWidget;
+
+public:
+	const TArray<FObjectInfo>& GetPlaceableObjectsList() const { return PlaceableObjectsList; }
 
 protected:
 	virtual void BeginPlay() override;
