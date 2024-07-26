@@ -19,7 +19,7 @@ struct FObjOptionButtonInfo
 
 	int32 Cost;
 
-	FImage* Image;
+	UTexture2D* Image;
 };
 
 
@@ -37,6 +37,6 @@ protected:
 	UButton* Button;
 
 public:
-	void SetInfo(FObjOptionButtonInfo& NewInfo);
+	void SetInfo(const FObjOptionButtonInfo& NewInfo);
 	void CreateUI();
 };

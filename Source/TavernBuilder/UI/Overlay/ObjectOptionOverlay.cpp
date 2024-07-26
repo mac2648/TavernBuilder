@@ -5,9 +5,9 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetTree.h"
-#include "Components/CanvasPanelSlot.h"
+#include "Components/OverlaySlot.h"
 
-void UObjectOptionOverlay::SetInfo(FObjOptionButtonInfo& NewInfo)
+void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 {
 	Info = NewInfo;
 
@@ -16,20 +16,15 @@ void UObjectOptionOverlay::SetInfo(FObjOptionButtonInfo& NewInfo)
 
 void UObjectOptionOverlay::CreateUI()
 {
-	if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Slot))
-	{
-		CanvasSlot->SetSize(FVector2D(250, 250));
-	}
-
 	Button = NewObject<UButton>(this);
 	if (Button)
 	{
 		AddChild(Button);
 
-		if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Button->Slot))
+		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Button->Slot))
 		{
-			CanvasSlot->SetSize(FVector2D(250, 150));
-			CanvasSlot->SetPosition(FVector2D(0, 100));
+			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Bottom);
+			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 		}
 	}
 
@@ -38,10 +33,10 @@ void UObjectOptionOverlay::CreateUI()
 	{
 		AddChild(Text);
 
-		if (UCanvasPanelSlot* CanvasSlot = Cast<UCanvasPanelSlot>(Text->Slot))
+		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Text->Slot))
 		{
-			CanvasSlot->SetSize(FVector2D(250, 100));
-			CanvasSlot->SetPosition(FVector2D(0, 0));
+			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Top);
+			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 		}
 	}
 }

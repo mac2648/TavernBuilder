@@ -11,6 +11,8 @@
  */
 class APlaceableObjects;
 class UAddObjectWidget;
+struct FObjOptionButtonInfo;
+struct FImage;
 
 UENUM(BlueprintType)
 enum EObjectCategory
@@ -38,6 +40,11 @@ struct FObjectInfo
 
 	UPROPERTY(EditAnywhere)
 	TEnumAsByte<EObjectCategory> Category;
+
+	UPROPERTY(EditAnywhere)
+	UTexture2D* Image;
+
+	operator FObjOptionButtonInfo() const;
 };
 
 UCLASS()
@@ -52,10 +59,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FObjectInfo> PlaceableObjectsList;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UAddObjectWidget> AddWidgetClass;
+
 	UAddObjectWidget* AddObjWidget;
 
 public:
-	const TArray<FObjectInfo>& GetPlaceableObjectsList() const { return PlaceableObjectsList; }
+	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList; }
 
 protected:
 	virtual void BeginPlay() override;

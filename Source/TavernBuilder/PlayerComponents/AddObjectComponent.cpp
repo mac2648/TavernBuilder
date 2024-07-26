@@ -5,13 +5,17 @@
 #include "TavernBuilder/Character/PlayerCharacter.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 #include "TavernBuilder/UI/UserWidget/AddObjectWidget.h"
+#include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
 
 void UAddObjectComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AddObjWidget = CreateWidget<UAddObjectWidget>(GetWorld(), UAddObjectWidget::StaticClass());
+	AddObjWidget = CreateWidget<UAddObjectWidget>(GetWorld(), AddWidgetClass);
+	AddObjWidget->SetAddObjComp(this);
+	AddObjWidget->AddToViewport();
 
+	AddObjWidget->ShowAllObjs();
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
@@ -31,4 +35,14 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 	Player->ActivateTool(ETools::MOVE);
 
 	PlaceTool->SetMovingObj(SpawnedObj);
+}
+
+FObjectInfo::operator FObjOptionButtonInfo() const
+{
+	FObjOptionButtonInfo OutInfo;
+	OutInfo.Class = Class;
+	OutInfo.Cost = Cost;
+	OutInfo.Name = Name;
+	OutInfo.Image = Image;
+	return OutInfo;
 }

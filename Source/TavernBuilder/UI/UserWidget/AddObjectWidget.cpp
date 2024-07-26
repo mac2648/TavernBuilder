@@ -5,6 +5,7 @@
 #include "Blueprint/WidgetTree.h"
 #include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
 #include "Components/CanvasPanelSlot.h"
+#include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 
 void UAddObjectWidget::NativeConstruct()
 {
@@ -14,15 +15,21 @@ void UAddObjectWidget::NativeConstruct()
 	{
 		NewObjsButtons[i] = WidgetTree->ConstructWidget<UObjectOptionOverlay>(UObjectOptionOverlay::StaticClass());
 
-		NewObjsButtons[i]->CreateUI();
-
 		RootWidget->AddChild(NewObjsButtons[i]);
 
-		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetPosition(FVector2D(200 + 250 * (i % 5), 300 + 200 * (i / 5)));
+		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetPosition(FVector2D(200 + 350 * (i % 5), 300 + 200 * (i / 5)));
+		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetSize(FVector2D(150,150));
+
+		NewObjsButtons[i]->CreateUI();
 	}
 }
 
 void UAddObjectWidget::ShowAllObjs()
 {
+	const TArray<FObjectInfo>& List = AddObjComp->GetPlaceableObjectsList();
 
+	for (int i = 0; i < List.Num() && i < NUMBER_OF_BUTTONS; i++)
+	{
+		NewObjsButtons[i]->SetInfo(List[i]);
+	}
 }
