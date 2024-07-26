@@ -26,4 +26,7 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void ButtonClick(UObjectOptionOverlay* PressedButton);
 };

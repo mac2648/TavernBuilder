@@ -16,6 +16,8 @@ void UAddObjectComponent::BeginPlay()
 	AddObjWidget->AddToViewport();
 
 	AddObjWidget->ShowAllObjs();
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
@@ -35,6 +37,26 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 	Player->ActivateTool(ETools::MOVE);
 
 	PlaceTool->SetMovingObj(SpawnedObj);
+}
+
+void UAddObjectComponent::OnActivate(UActorComponent* Comp, bool IsReset)
+{
+	Super::OnActivate(Comp, IsReset);
+
+	GetOwner()->GetInstigatorController<APlayerController>()->SetInputMode(FInputModeUIOnly());
+	GetOwner()->GetInstigatorController<APlayerController>()->SetShowMouseCursor(true);
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UAddObjectComponent::OnDeactivate(UActorComponent* Comp)
+{
+	Super::OnDeactivate(Comp);
+
+	GetOwner()->GetInstigatorController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+	GetOwner()->GetInstigatorController<APlayerController>()->SetShowMouseCursor(false);
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 FObjectInfo::operator FObjOptionButtonInfo() const

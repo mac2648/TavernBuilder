@@ -11,6 +11,8 @@ class APlaceableObjects;
 class UTextBlock;
 class UButton;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEventOptionButtonClick, UObjectOptionOverlay*, ClickedOverlay);
+
 struct FObjOptionButtonInfo
 {
 	TSubclassOf<APlaceableObjects> Class;
@@ -39,4 +41,12 @@ protected:
 public:
 	void SetInfo(const FObjOptionButtonInfo& NewInfo);
 	void CreateUI();
+
+	TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }
+
+	FEventOptionButtonClick OnOptionButtonClick;
+
+protected:
+	UFUNCTION()
+	void OptionButtonClick();
 };

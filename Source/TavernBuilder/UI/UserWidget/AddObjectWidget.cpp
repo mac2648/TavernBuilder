@@ -6,6 +6,8 @@
 #include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
 #include "Components/CanvasPanelSlot.h"
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
+#include "Components/Button.h"
+#include "InputActionValue.h"
 
 void UAddObjectWidget::NativeConstruct()
 {
@@ -21,6 +23,8 @@ void UAddObjectWidget::NativeConstruct()
 		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetSize(FVector2D(150,150));
 
 		NewObjsButtons[i]->CreateUI();
+
+		NewObjsButtons[i]->OnOptionButtonClick.AddDynamic(this, &UAddObjectWidget::ButtonClick);
 	}
 }
 
@@ -32,4 +36,10 @@ void UAddObjectWidget::ShowAllObjs()
 	{
 		NewObjsButtons[i]->SetInfo(List[i]);
 	}
+}
+
+void UAddObjectWidget::ButtonClick(UObjectOptionOverlay* PressedButton)
+{
+	AddObjComp->SetObjectClass(PressedButton->GetObjectClass());
+	AddObjComp->Execute(FInputActionValue());
 }

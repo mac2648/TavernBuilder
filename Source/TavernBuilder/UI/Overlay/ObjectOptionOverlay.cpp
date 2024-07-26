@@ -26,6 +26,8 @@ void UObjectOptionOverlay::CreateUI()
 			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Bottom);
 			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 		}
+
+		Button->OnClicked.AddDynamic(this, &UObjectOptionOverlay::OptionButtonClick);
 	}
 
 	Text = NewObject<UTextBlock>(this);
@@ -39,4 +41,9 @@ void UObjectOptionOverlay::CreateUI()
 			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 		}
 	}
+}
+
+void UObjectOptionOverlay::OptionButtonClick()
+{
+	OnOptionButtonClick.Broadcast(this);
 }

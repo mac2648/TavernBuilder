@@ -53,22 +53,26 @@ class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<APlaceableObjects> ObjectToSpawn;
-
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FObjectInfo> PlaceableObjectsList;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAddObjectWidget> AddWidgetClass;
 
+	TSubclassOf<APlaceableObjects> ObjectToSpawn;
 	UAddObjectWidget* AddObjWidget;
 
 public:
 	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList; }
+	void SetObjectClass(TSubclassOf<APlaceableObjects> NewClass) { ObjectToSpawn = NewClass; }
 
 protected:
 	virtual void BeginPlay() override;
 	
 	virtual void Execute(const FInputActionValue& Value) override;
+
+	virtual void OnActivate(UActorComponent* Comp, bool IsReset) override;
+	virtual void OnDeactivate(UActorComponent* Comp) override;
+
+	friend UAddObjectWidget;
 };
