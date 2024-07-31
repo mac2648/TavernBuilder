@@ -10,6 +10,7 @@
 class APlaceableObjects;
 class UTextBlock;
 class UButton;
+class UImage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEventOptionButtonClick, UObjectOptionOverlay*, ClickedOverlay);
 
@@ -37,6 +38,8 @@ protected:
 	UTextBlock* Text;
 
 	UButton* Button;
+
+	UImage* Image;
 
 public:
 	void SetInfo(const FObjOptionButtonInfo& NewInfo);
