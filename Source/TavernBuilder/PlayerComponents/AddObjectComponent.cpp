@@ -4,10 +4,20 @@
 #include "TavernBuilder/Objects/PlaceableObjects.h"
 #include "TavernBuilder/Character/PlayerCharacter.h"
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
+#include "TavernBuilder/UI/UserWidget/AddObjectWidget.h"
+#include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
 
 void UAddObjectComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AddObjWidget = CreateWidget<UAddObjectWidget>(GetWorld(), AddWidgetClass);
+	AddObjWidget->SetAddObjComp(this);
+	AddObjWidget->AddToViewport();
+
+	AddObjWidget->ShowAllObjs();
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
@@ -27,4 +37,34 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 	Player->ActivateTool(ETools::MOVE);
 
 	PlaceTool->SetMovingObj(SpawnedObj);
+}
+
+void UAddObjectComponent::OnActivate(UActorComponent* Comp, bool IsReset)
+{
+	Super::OnActivate(Comp, IsReset);
+
+	GetOwner()->GetInstigatorController<APlayerController>()->SetInputMode(FInputModeUIOnly());
+	GetOwner()->GetInstigatorController<APlayerController>()->SetShowMouseCursor(true);
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UAddObjectComponent::OnDeactivate(UActorComponent* Comp)
+{
+	Super::OnDeactivate(Comp);
+
+	GetOwner()->GetInstigatorController<APlayerController>()->SetInputMode(FInputModeGameOnly());
+	GetOwner()->GetInstigatorController<APlayerController>()->SetShowMouseCursor(false);
+
+	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+FObjectInfo::operator FObjOptionButtonInfo() const
+{
+	FObjOptionButtonInfo OutInfo;
+	OutInfo.Class = Class;
+	OutInfo.Cost = Cost;
+	OutInfo.Name = Name;
+	OutInfo.Image = Image;
+	return OutInfo;
 }
