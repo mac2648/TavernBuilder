@@ -8,23 +8,42 @@
 
 void UPlaceToolComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	if (!MovingObj)
+	{
+		FHitResult OutHit;
+
+		FCollisionQueryParams QueryParams;
+
+		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
+
+		//sets highlight if looking at movableObject
+		if (APlaceableObjects* HitObj = Cast<APlaceableObjects>(OutHit.GetActor()))
+		{
+			HitObj->SetTempHighLight(HighLightMaterial);
+		}
+	}
+
+	//moves the object if one is being moved
 	if (MovingObj)
 	{
 		FHitResult OutHit;
 
 		FCollisionQueryParams QueryParams;
-		QueryParams.AddIgnoredActor(MovingObj);
 
-		TArray<APlaceableObjects*> AttachedObjs;
-		MovingObj->GetAttachedObjs(AttachedObjs);
-
-		for (APlaceableObjects* Obj : AttachedObjs)
+		if (MovingObj)
 		{
-			QueryParams.AddIgnoredActor(Obj);
+			QueryParams.AddIgnoredActor(MovingObj);
+
+			TArray<APlaceableObjects*> AttachedObjs;
+			MovingObj->GetAttachedObjs(AttachedObjs);
+
+			for (APlaceableObjects* Obj : AttachedObjs)
+			{
+				QueryParams.AddIgnoredActor(Obj);
+			}
 		}
 
 		UTavernBuilderUtils::RaycastFromPlayerView(OutHit, QueryParams, this);
-
 		FVector MoveLocation = OutHit.Location;
 
 		MovingObj->Move(MoveLocation);

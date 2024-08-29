@@ -95,3 +95,15 @@ void APlaceableObjects::GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) con
 	}
 	
 }
+
+void APlaceableObjects::HighLight(UMaterialInstance* HighLightMaterial)
+{
+	Mesh->SetOverlayMaterial(HighLightMaterial);
+
+	if (HighLightHandle.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(HighLightHandle);
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(HighLightHandle, this, &APlaceableObjects::RemoveHighlight, 0.004);
+}
