@@ -39,7 +39,8 @@ public:
 
 	void GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) const;
 
-	void HighLight(UMaterialInstance* HighLightMaterial);
+	void SetTempHighLight(UMaterialInstance* HighLightMaterial);
+	void SetHighLight(UMaterialInstance* HighLightMaterial);
 	void RemoveHighlight() { Mesh->SetOverlayMaterial(nullptr); }
 
 
