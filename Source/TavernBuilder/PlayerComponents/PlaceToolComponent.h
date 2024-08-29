@@ -18,6 +18,9 @@ class TAVERNBUILDER_API UPlaceToolComponent : public UTwoActionToolComponent
 	GENERATED_BODY()
 	
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* HighLightMaterial;
+
 	APlaceableObjects* MovingObj = nullptr;
 
 public:

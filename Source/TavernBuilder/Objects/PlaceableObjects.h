@@ -18,6 +18,9 @@ protected:
 	TMap<APlaceableObjects*, FVector> AttachedObjs;
 
 	APlaceableObjects* ParentObj = nullptr;
+
+private:
+	FTimerHandle HighLightHandle;
 	
 public:	
 	APlaceableObjects();
@@ -35,6 +38,10 @@ public:
 	APlaceableObjects* GetParentObj() const { return ParentObj; }
 
 	void GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) const;
+
+	void SetTempHighLight(UMaterialInstance* HighLightMaterial);
+	void SetHighLight(UMaterialInstance* HighLightMaterial);
+	void RemoveHighlight() { Mesh->SetOverlayMaterial(nullptr); }
 
 
 protected:
