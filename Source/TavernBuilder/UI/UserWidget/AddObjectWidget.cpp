@@ -13,14 +13,14 @@ void UAddObjectWidget::NativeConstruct()
 {
 	UPanelWidget* RootWidget = Cast<UPanelWidget>(GetRootWidget());
 
-	for (int i = 0; i < NUMBER_OF_BUTTONS; i++)
+	for (int i = 0; i < NumNewObjBnt; i++)
 	{
 		NewObjsButtons[i] = WidgetTree->ConstructWidget<UObjectOptionOverlay>(UObjectOptionOverlay::StaticClass());
 
 		RootWidget->AddChild(NewObjsButtons[i]);
 
-		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetPosition(FVector2D(200 + 350 * (i % 5), 300 + 200 * (i / 5)));
-		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetSize(FVector2D(150,150));
+		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetPosition(FVector2D(200 + NewObjBntDistX * (i % NewObjBntPerRow), 300 + NewObjBntDistY * (i / NewObjBntPerRow)));
+		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
 
 		NewObjsButtons[i]->CreateUI();
 
@@ -32,7 +32,7 @@ void UAddObjectWidget::ShowAllObjs()
 {
 	const TArray<FObjectInfo>& List = AddObjComp->GetPlaceableObjectsList();
 
-	for (int i = 0; i < List.Num() && i < NUMBER_OF_BUTTONS; i++)
+	for (int i = 0; i < List.Num() && i < NumNewObjBnt; i++)
 	{
 		NewObjsButtons[i]->SetInfo(List[i]);
 	}

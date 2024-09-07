@@ -4,19 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "TavernBuilder/Utils/Consts.h"
 #include "AddObjectWidget.generated.h"
 
 class UObjectOptionOverlay;
 class UAddObjectComponent;
 
-const int NUMBER_OF_BUTTONS = 50;
+using namespace UIConsts;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
-	UObjectOptionOverlay* NewObjsButtons[NUMBER_OF_BUTTONS];
+	UObjectOptionOverlay* NewObjsButtons[NumNewObjBnt];
 
 	UAddObjectComponent* AddObjComp;
 

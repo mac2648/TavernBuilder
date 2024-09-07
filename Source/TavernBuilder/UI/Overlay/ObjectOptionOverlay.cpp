@@ -7,6 +7,9 @@
 #include "Components/Image.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/OverlaySlot.h"
+#include "TavernBuilder/Utils/Consts.h"
+
+using namespace UIConsts;
 
 void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 {
@@ -21,26 +24,31 @@ void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 
 void UObjectOptionOverlay::CreateUI()
 {
-	Text = NewObject<UTextBlock>(this);
-	if (Text)
-	{
-		AddChild(Text);
-
-		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Text->Slot))
-		{
-			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Top);
-			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-		}
-	}
-
 	Image = NewObject<UImage>(this);
 	if (Image)
 	{
 		AddChild(Image);
 
+		Image->Brush.ImageSize.X = NewObjImgSizeX;
+		Image->Brush.ImageSize.Y = NewObjImgSizeY;
+
 		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Image->Slot))
 		{
 			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Bottom);
+			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
+		}
+	}
+
+	Text = NewObject<UTextBlock>(this);
+	if (Text)
+	{
+		AddChild(Text);
+
+		Text->SetColorAndOpacity(FSlateColor(FColor::Black));
+
+		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Text->Slot))
+		{
+			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Top);
 			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
 		}
 	}
