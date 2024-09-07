@@ -1,5 +1,10 @@
+#include "TavernBuilderUtils.h"
+
 namespace UIConsts
 {
+	const int NewObjBntIniPosX = -560;
+	const int NewObjBntIniPosY = -350;
+
 	const int NewObjBntSizeX = 250;
 	const int NewObjBntSizeY = 310;
 

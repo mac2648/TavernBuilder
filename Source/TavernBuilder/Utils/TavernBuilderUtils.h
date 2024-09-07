@@ -22,4 +22,6 @@ public:
 	static double GetMouseAngleFromScreenCenter();
 
 	static void RaycastFromPlayerView(FHitResult& OutHit, FCollisionQueryParams& QueryParams, UObject* WorldContextObject);
+
+	static FVector2D GetScreenCenter();
 };

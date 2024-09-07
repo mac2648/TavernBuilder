@@ -55,3 +55,12 @@ void UTavernBuilderUtils::RaycastFromPlayerView(FHitResult& OutHit, FCollisionQu
 
 	WorldContextObject->GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
 }
+
+FVector2D UTavernBuilderUtils::GetScreenCenter()
+{
+	FVector2D ScreenCenter;
+	GEngine->GameViewport->GetViewportSize(ScreenCenter);
+
+	ScreenCenter /= 2;
+	return ScreenCenter;
+}

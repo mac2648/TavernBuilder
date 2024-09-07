@@ -8,6 +8,7 @@
 #include "TavernBuilder/PlayerComponents/AddObjectComponent.h"
 #include "Components/Button.h"
 #include "InputActionValue.h"
+#include "TavernBuilder/Utils/TavernBuilderUtils.h"
 
 void UAddObjectWidget::NativeConstruct()
 {
@@ -19,8 +20,12 @@ void UAddObjectWidget::NativeConstruct()
 
 		RootWidget->AddChild(NewObjsButtons[i]);
 
-		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetPosition(FVector2D(200 + NewObjBntDistX * (i % NewObjBntPerRow), 300 + NewObjBntDistY * (i / NewObjBntPerRow)));
-		Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot)->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
+		UCanvasPanelSlot* Panelslot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
+
+		Panelslot->SetAnchors(FAnchors(0.5, 0.5));
+		Panelslot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow)));
+		Panelslot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
+
 
 		NewObjsButtons[i]->CreateUI();
 
