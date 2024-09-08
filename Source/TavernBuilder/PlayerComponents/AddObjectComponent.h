@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Tavernbuilder/PlayerComponents/ToolComponent.h"
+#include "TavernBuilder/Utils/Structs/ObjectInfo.h"
 #include "AddObjectComponent.generated.h"
 
 /**
@@ -13,39 +14,6 @@ class APlaceableObjects;
 class UAddObjectWidget;
 struct FObjOptionButtonInfo;
 struct FImage;
-
-UENUM(BlueprintType)
-enum EObjectCategory
-{
-	Chair,
-	Table
-};
-
-USTRUCT(BlueprintType)
-struct FObjectInfo
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere)
-	FText Name;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<APlaceableObjects> Class;
-
-	UPROPERTY(EditAnywhere)
-	TArray<UMaterialInstance*> Materials;
-
-	UPROPERTY(EditAnywhere)
-	int32 Cost;
-
-	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EObjectCategory> Category;
-
-	UPROPERTY(EditAnywhere)
-	UTexture2D* Image;
-
-	operator FObjOptionButtonInfo() const;
-};
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent

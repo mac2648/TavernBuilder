@@ -58,13 +58,3 @@ void UAddObjectComponent::OnDeactivate(UActorComponent* Comp)
 
 	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
-
-FObjectInfo::operator FObjOptionButtonInfo() const
-{
-	FObjOptionButtonInfo OutInfo;
-	OutInfo.Class = Class;
-	OutInfo.Cost = Cost;
-	OutInfo.Name = Name;
-	OutInfo.Image = Image;
-	return OutInfo;
-}

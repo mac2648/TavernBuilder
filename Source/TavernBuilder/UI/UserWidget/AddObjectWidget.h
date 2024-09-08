@@ -4,14 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TavernBuilder/Utils/Consts.h"
+#include "TavernBuilder/Utils/Consts/ConstsUI.h"
 #include "AddObjectWidget.generated.h"
 
 class UObjectOptionOverlay;
 class UAddObjectComponent;
 class USlider;
-
-using namespace UIConsts;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget

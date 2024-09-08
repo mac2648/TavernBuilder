@@ -7,9 +7,8 @@
 #include "Components/Image.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/OverlaySlot.h"
-#include "TavernBuilder/Utils/Consts.h"
+#include "TavernBuilder/Utils/Consts/ConstsUI.h"
 
-using namespace UIConsts;
 
 void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 {
