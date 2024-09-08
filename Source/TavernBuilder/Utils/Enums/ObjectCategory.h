@@ -8,5 +8,5 @@ enum EObjectCategory
 	Chair,
 	Table,
 
-	All
+	AllCategories
 };

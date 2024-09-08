@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "TavernBuilder/Utils/Consts/ConstsUI.h"
+#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 #include "AddObjectWidget.generated.h"
 
 class UObjectOptionOverlay;
 class UAddObjectComponent;
 class USlider;
+class UButton;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
@@ -21,6 +23,8 @@ class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 	UAddObjectComponent* AddObjComp;
 
 	USlider* Slider;
+
+	UButton* Categories[AllCategories + 1];
 
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }

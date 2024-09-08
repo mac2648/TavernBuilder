@@ -53,10 +53,22 @@ void UAddObjectWidget::NativeConstruct()
 		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow)));
 		PanelSlot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
 
-
 		NewObjsButtons[i]->CreateUI();
 
 		NewObjsButtons[i]->OnOptionButtonClick.AddDynamic(this, &UAddObjectWidget::ButtonClick);
+	}
+
+	for (int i = 0; i < AllCategories + 1; i++)
+	{
+		Categories[i] = WidgetTree->ConstructWidget<UButton>();
+
+		RootWidget->AddChild(Categories[i]);
+
+		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(Categories[i]->Slot);
+
+		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
+		PanelSlot->SetPosition(FVector2D(CatBntPosX, CatBntPosY + (CatBntDisY * i) ));
+		PanelSlot->SetSize(FVector2D(50, 30));
 	}
 }
 
