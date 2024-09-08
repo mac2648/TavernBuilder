@@ -9,6 +9,7 @@
 
 class UObjectOptionOverlay;
 class UAddObjectComponent;
+class USlider;
 
 using namespace UIConsts;
 
@@ -21,12 +22,17 @@ class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 
 	UAddObjectComponent* AddObjComp;
 
+	USlider* Slider;
+
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }
 	void ShowAllObjs();
 
 protected:
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void MoveButtons(float Percent);
 
 	UFUNCTION()
 	void ButtonClick(UObjectOptionOverlay* PressedButton);

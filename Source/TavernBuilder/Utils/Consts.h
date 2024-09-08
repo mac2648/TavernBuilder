@@ -16,4 +16,10 @@ namespace UIConsts
 
 	const int NumNewObjBnt = 40;
 	const int NewObjBntPerRow = 4;
+
+	const int NewObjSliderHeight = 800;
+	const int NewObjSliderWidth = 20;
+
+
+	constexpr auto NewObjUIHeight = NewObjBntDistY * (NumNewObjBnt / NewObjBntPerRow - 2);
 }

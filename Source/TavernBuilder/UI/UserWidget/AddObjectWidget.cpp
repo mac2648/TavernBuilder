@@ -9,10 +9,37 @@
 #include "Components/Button.h"
 #include "InputActionValue.h"
 #include "TavernBuilder/Utils/TavernBuilderUtils.h"
+#include "Components/Slider.h"
 
 void UAddObjectWidget::NativeConstruct()
 {
 	UPanelWidget* RootWidget = Cast<UPanelWidget>(GetRootWidget());
+
+	Slider = WidgetTree->ConstructWidget<USlider>();
+
+	if (Slider)
+	{
+		RootWidget->AddChild(Slider);
+
+		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(Slider->Slot);
+
+		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
+		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntPerRow * NewObjBntDistX + 100, NewObjBntIniPosY));
+		PanelSlot->SetSize(FVector2D(NewObjSliderWidth, NewObjSliderHeight));
+
+		Slider->SetOrientation(EOrientation::Orient_Vertical);
+
+		FSliderStyle Style = Slider->GetWidgetStyle();
+		Style.SetBarThickness(NewObjSliderWidth);
+		Slider->SetWidgetStyle(Style);
+
+		FWidgetTransform Transform = Slider->GetRenderTransform();
+		Transform.Angle = 180.0f;
+		Slider->SetRenderTransform(Transform);
+
+		Slider->OnValueChanged.AddDynamic(this, &UAddObjectWidget::MoveButtons);
+
+	}
 
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{
@@ -20,11 +47,11 @@ void UAddObjectWidget::NativeConstruct()
 
 		RootWidget->AddChild(NewObjsButtons[i]);
 
-		UCanvasPanelSlot* Panelslot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
+		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
 
-		Panelslot->SetAnchors(FAnchors(0.5, 0.5));
-		Panelslot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow)));
-		Panelslot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
+		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
+		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow)));
+		PanelSlot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
 
 
 		NewObjsButtons[i]->CreateUI();
@@ -47,4 +74,14 @@ void UAddObjectWidget::ButtonClick(UObjectOptionOverlay* PressedButton)
 {
 	AddObjComp->SetObjectClass(PressedButton->GetObjectClass());
 	AddObjComp->Execute(FInputActionValue());
+}
+
+void UAddObjectWidget::MoveButtons(float Percent)
+{
+	for (int i = 0; i < NumNewObjBnt; i++)
+	{
+		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
+
+		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow) - Percent * NewObjUIHeight));
+	}
 }
