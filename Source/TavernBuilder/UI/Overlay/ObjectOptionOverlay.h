@@ -32,6 +32,8 @@ protected:
 
 public:
 	void SetInfo(const FObjOptionButtonInfo& NewInfo);
+	void ClearInfo();
+
 	void CreateUI();
 
 	TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }

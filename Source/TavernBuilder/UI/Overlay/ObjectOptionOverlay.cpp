@@ -21,6 +21,14 @@ void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 	}
 }
 
+void UObjectOptionOverlay::ClearInfo()
+{
+	Info.Clear();
+
+	Text->SetText(Info.Name);
+	Image->SetBrushFromTexture(Info.Image);
+}
+
 void UObjectOptionOverlay::CreateUI()
 {
 	Image = NewObject<UImage>(this);

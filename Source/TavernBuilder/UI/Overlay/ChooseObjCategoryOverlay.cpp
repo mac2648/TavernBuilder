@@ -22,6 +22,8 @@ void UChooseObjCategoryOverlay::Initialize(EObjectCategory NewCategory)
 			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
 			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 		}
+
+		CategoryButton->OnClicked.AddDynamic(this, &UChooseObjCategoryOverlay::CategoryButtonClick);
 	}
 
 	CategoryText = NewObject<UTextBlock>();
@@ -39,4 +41,9 @@ void UChooseObjCategoryOverlay::Initialize(EObjectCategory NewCategory)
 		CategoryText->SetText(FText::FromString(UTavernBuilderUtils::GetObjCategoryName(Category)));
 		CategoryText->SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
+}
+
+void UChooseObjCategoryOverlay::CategoryButtonClick()
+{
+	OnCategoryClick.Broadcast(this);
 }

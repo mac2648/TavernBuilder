@@ -6,6 +6,7 @@
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 #include "TavernBuilder/UI/UserWidget/AddObjectWidget.h"
 #include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
+#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 
 void UAddObjectComponent::BeginPlay()
 {
@@ -57,4 +58,23 @@ void UAddObjectComponent::OnDeactivate(UActorComponent* Comp)
 	GetOwner()->GetInstigatorController<APlayerController>()->SetShowMouseCursor(false);
 
 	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UAddObjectComponent::GetPlaceableObjectsListByCategory(EObjectCategory Category, TArray<FObjectInfo>& List) const
+{
+	List.Empty();
+
+	if (Category == AllCategories)
+	{
+		List = GetPlaceableObjectsList();
+		return;
+	}
+
+	for (int i = 0; i < PlaceableObjectsList.Num(); i++)
+	{
+		if (PlaceableObjectsList[i].Category == Category)
+		{
+			List.Add(PlaceableObjectsList[i]);
+		}
+	}
 }

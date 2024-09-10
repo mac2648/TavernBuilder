@@ -38,4 +38,7 @@ protected:
 
 	UFUNCTION()
 	void ButtonClick(UObjectOptionOverlay* PressedButton);
+
+	UFUNCTION()
+	void ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay);
 };

@@ -76,6 +76,8 @@ void UAddObjectWidget::NativeConstruct()
 		PanelSlot->SetSize(FVector2D(CategoryBntSizeX, CategoryBntSizeY));
 
 		Categories[i]->Initialize(i);
+
+		Categories[i]->OnCategoryClick.AddDynamic(this, &UAddObjectWidget::ApplyCatagory);
 	}
 }
 
@@ -102,5 +104,21 @@ void UAddObjectWidget::MoveButtons(float Percent)
 		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
 
 		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow) - Percent * NewObjUIHeight));
+	}
+}
+
+void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
+{
+	for (int i = 0; i < NumNewObjBnt; i++)
+	{
+		NewObjsButtons[i]->ClearInfo();
+	}
+
+	TArray<FObjectInfo> List; 
+	AddObjComp->GetPlaceableObjectsListByCategory(ClickedOverlay->GetCategory(), List);
+
+	for (int i = 0; i < List.Num() && i < NumNewObjBnt; i++)
+	{
+		NewObjsButtons[i]->SetInfo(List[i]);
 	}
 }
