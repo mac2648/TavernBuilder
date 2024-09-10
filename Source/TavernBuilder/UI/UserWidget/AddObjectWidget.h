@@ -11,7 +11,7 @@
 class UObjectOptionOverlay;
 class UAddObjectComponent;
 class USlider;
-class UButton;
+class UChooseObjCategoryOverlay;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
@@ -24,7 +24,7 @@ class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 
 	USlider* Slider;
 
-	UButton* Categories[AllCategories + 1];
+	UChooseObjCategoryOverlay* Categories[AllCategories + 1];
 
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }

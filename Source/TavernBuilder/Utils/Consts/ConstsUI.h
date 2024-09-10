@@ -18,9 +18,11 @@ const int NewObjBntPerRow = 4;
 const int NewObjSliderHeight = 800;
 const int NewObjSliderWidth = 20;
 
-const int CatBntPosX = -620;
-const int CatBntPosY = -350;
-const int CatBntDisY = 80;
-
-
 constexpr auto NewObjUIHeight = NewObjBntDistY * (NumNewObjBnt / NewObjBntPerRow - 2);
+
+const int CategoryBntSizeX = 150;
+const int CategoryBntSizeY = 70;
+
+constexpr int CatBntPosX = NewObjBntIniPosX - 50 - CategoryBntSizeX;
+const int CatBntPosY = NewObjBntIniPosY;
+const int CatBntDisY = 50 + CategoryBntSizeY;

@@ -10,6 +10,7 @@
 #include "InputActionValue.h"
 #include "TavernBuilder/Utils/TavernBuilderUtils.h"
 #include "Components/Slider.h"
+#include "TavernBuilder/UI/Overlay/ChooseObjCategoryOverlay.h"
 
 void UAddObjectWidget::NativeConstruct()
 {
@@ -50,7 +51,11 @@ void UAddObjectWidget::NativeConstruct()
 		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
 
 		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
-		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow)));
+
+		int NewObkButtonPositionX = NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow);
+		int NewObkButtonPositionY = NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow);
+
+		PanelSlot->SetPosition(FVector2D(NewObkButtonPositionX, NewObkButtonPositionY));
 		PanelSlot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
 
 		NewObjsButtons[i]->CreateUI();
@@ -58,9 +63,9 @@ void UAddObjectWidget::NativeConstruct()
 		NewObjsButtons[i]->OnOptionButtonClick.AddDynamic(this, &UAddObjectWidget::ButtonClick);
 	}
 
-	for (int i = 0; i < AllCategories + 1; i++)
+	for (EObjectCategory i = EObjectCategory::Chair; i <= AllCategories; i++)
 	{
-		Categories[i] = WidgetTree->ConstructWidget<UButton>();
+		Categories[i] = WidgetTree->ConstructWidget<UChooseObjCategoryOverlay>();
 
 		RootWidget->AddChild(Categories[i]);
 
@@ -68,7 +73,9 @@ void UAddObjectWidget::NativeConstruct()
 
 		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
 		PanelSlot->SetPosition(FVector2D(CatBntPosX, CatBntPosY + (CatBntDisY * i) ));
-		PanelSlot->SetSize(FVector2D(50, 30));
+		PanelSlot->SetSize(FVector2D(CategoryBntSizeX, CategoryBntSizeY));
+
+		Categories[i]->Initialize(i);
 	}
 }
 

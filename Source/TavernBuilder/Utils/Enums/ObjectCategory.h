@@ -10,3 +10,5 @@ enum EObjectCategory
 
 	AllCategories
 };
+
+EObjectCategory operator++(EObjectCategory& Category, int);

@@ -6,6 +6,8 @@
 #include "UObject/NoExportTypes.h"
 #include "TavernBuilderUtils.generated.h"
 
+enum EObjectCategory;
+
 /**
  * 
  */
@@ -24,4 +26,6 @@ public:
 	static void RaycastFromPlayerView(FHitResult& OutHit, FCollisionQueryParams& QueryParams, UObject* WorldContextObject);
 
 	static FVector2D GetScreenCenter();
+
+	static FString GetObjCategoryName(EObjectCategory Category);
 };

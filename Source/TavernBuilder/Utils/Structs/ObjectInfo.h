@@ -1,12 +1,12 @@
 #pragma once
 
-#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 #include "ObjOptionButtonInfo.h"
 #include "ObjectInfo.generated.h"
 
 class APlaceableObjects;
 class UMaterialInstance;
 class UTexture2D;
+enum EObjectCategory;
 
 USTRUCT(BlueprintType)
 struct FObjectInfo
