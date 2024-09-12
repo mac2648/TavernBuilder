@@ -83,12 +83,7 @@ void UAddObjectWidget::NativeConstruct()
 
 void UAddObjectWidget::ShowAllObjs()
 {
-	const TArray<FObjectInfo>& List = AddObjComp->GetPlaceableObjectsList();
-
-	for (int i = 0; i < List.Num() && i < NumNewObjBnt; i++)
-	{
-		NewObjsButtons[i]->SetInfo(List[i]);
-	}
+	ApplyCatagory(Categories[AllCategories]);
 }
 
 void UAddObjectWidget::ButtonClick(UObjectOptionOverlay* PressedButton)
@@ -112,6 +107,7 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{
 		NewObjsButtons[i]->ClearInfo();
+		NewObjsButtons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	TArray<FObjectInfo> List; 
@@ -121,4 +117,13 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 	{
 		NewObjsButtons[i]->SetInfo(List[i]);
 	}
+
+	for (int i = 0; i < NumNewObjBnt; i++)
+	{
+		if (!NewObjsButtons[i]->IsValid())
+		{
+			NewObjsButtons[i]->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+
 }

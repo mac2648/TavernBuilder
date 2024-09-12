@@ -37,6 +37,7 @@ public:
 	void CreateUI();
 
 	TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }
+	bool IsValid() const { return Info.IsValid(); }
 
 	FEventOptionButtonClick OnOptionButtonClick;
 

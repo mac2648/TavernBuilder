@@ -16,11 +16,6 @@ struct FObjOptionButtonInfo
 	UTexture2D* Image;
 
 public:
-	void Clear()
-	{
-		Class = nullptr;
-		Name = FText::FromString("");
-		Cost = 0;
-		Image = nullptr;
-	}
+	void Clear();
+	bool IsValid() const;
 };

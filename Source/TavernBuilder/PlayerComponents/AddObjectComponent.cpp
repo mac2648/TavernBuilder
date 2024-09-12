@@ -10,7 +10,7 @@
 
 void UAddObjectComponent::BeginPlay()
 {
-	PlaceableObjectsList = NewObject<UObjectInfoArray>(this, PlaceableObjectsListClass);//<UObjectInfoArray>(PlaceableObjectsListClass)
+	PlaceableObjectsList = NewObject<UObjectInfoArray>(this, PlaceableObjectsListClass);
 
 	Super::BeginPlay();
 
