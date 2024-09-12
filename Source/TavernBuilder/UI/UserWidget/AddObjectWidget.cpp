@@ -98,7 +98,13 @@ void UAddObjectWidget::MoveButtons(float Percent)
 	{
 		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
 
-		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow) - Percent * NewObjUIHeight));
+		int UIHeight = NewObjUIHeight(NumActiveButtons);
+		if (UIHeight <= 0)
+		{
+			UIHeight = 0;
+		}
+
+		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow) - Percent * UIHeight));
 	}
 }
 
@@ -118,6 +124,8 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 		NewObjsButtons[i]->SetInfo(List[i]);
 	}
 
+	NumActiveButtons = List.Num() + 1;
+
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{
 		if (!NewObjsButtons[i]->IsValid())
@@ -126,4 +134,5 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 		}
 	}
 
+	Slider->SetValue(0.0f);
 }

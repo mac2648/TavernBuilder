@@ -26,6 +26,8 @@ class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 
 	UChooseObjCategoryOverlay* Categories[AllCategories + 1];
 
+	int NumActiveButtons = 0;
+
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }
 	void ShowAllObjs();
