@@ -41,3 +41,13 @@ struct FObjectInfo
 		return OutInfo;
 	}
 };
+
+UCLASS(config = Game, BlueprintType, Blueprintable, MinimalAPI)
+class UObjectInfoArray : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere)
+	TArray<FObjectInfo> List;
+};

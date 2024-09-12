@@ -10,6 +10,8 @@
 
 void UAddObjectComponent::BeginPlay()
 {
+	PlaceableObjectsList = NewObject<UObjectInfoArray>(this, PlaceableObjectsListClass);//<UObjectInfoArray>(PlaceableObjectsListClass)
+
 	Super::BeginPlay();
 
 	AddObjWidget = CreateWidget<UAddObjectWidget>(GetWorld(), AddWidgetClass);
@@ -70,11 +72,11 @@ void UAddObjectComponent::GetPlaceableObjectsListByCategory(EObjectCategory Cate
 		return;
 	}
 
-	for (int i = 0; i < PlaceableObjectsList.Num(); i++)
+	for (int i = 0; i < PlaceableObjectsList->List.Num(); i++)
 	{
-		if (PlaceableObjectsList[i].Category == Category)
+		if (PlaceableObjectsList->List[i].Category == Category)
 		{
-			List.Add(PlaceableObjectsList[i]);
+			List.Add(PlaceableObjectsList->List[i]);
 		}
 	}
 }

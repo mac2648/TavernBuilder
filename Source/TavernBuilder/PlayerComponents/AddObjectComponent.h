@@ -23,7 +23,9 @@ class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FObjectInfo> PlaceableObjectsList;
+	TSubclassOf<UObjectInfoArray> PlaceableObjectsListClass;
+
+	UObjectInfoArray* PlaceableObjectsList;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAddObjectWidget> AddWidgetClass;
@@ -32,7 +34,7 @@ protected:
 	UAddObjectWidget* AddObjWidget;
 
 public:
-	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList; }
+	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList->List; }
 
 	void GetPlaceableObjectsListByCategory(EObjectCategory Category, TArray<FObjectInfo>& OutList) const;
 
