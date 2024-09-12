@@ -4,21 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "TavernBuilder/Utils/Consts/ConstsUI.h"
+#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 #include "AddObjectWidget.generated.h"
 
 class UObjectOptionOverlay;
 class UAddObjectComponent;
-
-const int NUMBER_OF_BUTTONS = 50;
+class USlider;
+class UChooseObjCategoryOverlay;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
-	UObjectOptionOverlay* NewObjsButtons[NUMBER_OF_BUTTONS];
+	UObjectOptionOverlay* NewObjsButtons[NumNewObjBnt];
 
 	UAddObjectComponent* AddObjComp;
+
+	USlider* Slider;
+
+	UChooseObjCategoryOverlay* Categories[AllCategories + 1];
+
+	int NumActiveButtons = 0;
 
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }
@@ -28,5 +36,11 @@ protected:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
+	void MoveButtons(float Percent);
+
+	UFUNCTION()
 	void ButtonClick(UObjectOptionOverlay* PressedButton);
+
+	UFUNCTION()
+	void ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay);
 };

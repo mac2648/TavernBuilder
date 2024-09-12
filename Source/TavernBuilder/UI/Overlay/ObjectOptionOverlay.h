@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/Overlay.h"
+#include "TavernBuilder/Utils/Structs/ObjOptionButtoninfo.h"
 #include "ObjectOptionOverlay.generated.h"
 
 
@@ -13,18 +14,6 @@ class UButton;
 class UImage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEventOptionButtonClick, UObjectOptionOverlay*, ClickedOverlay);
-
-struct FObjOptionButtonInfo
-{
-	TSubclassOf<APlaceableObjects> Class;
-
-	FText Name;
-
-	int32 Cost;
-
-	UTexture2D* Image;
-};
-
 
 UCLASS()
 class TAVERNBUILDER_API UObjectOptionOverlay : public UOverlay
@@ -43,9 +32,12 @@ protected:
 
 public:
 	void SetInfo(const FObjOptionButtonInfo& NewInfo);
+	void ClearInfo();
+
 	void CreateUI();
 
 	TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }
+	bool IsValid() const { return Info.IsValid(); }
 
 	FEventOptionButtonClick OnOptionButtonClick;
 

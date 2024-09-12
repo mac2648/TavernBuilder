@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "TavernBuilder/Character/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 
 double UTavernBuilderUtils::GetMouseAngleFromScreenCenter()
 {
@@ -54,4 +55,32 @@ void UTavernBuilderUtils::RaycastFromPlayerView(FHitResult& OutHit, FCollisionQu
 	FVector End = Start + LookingDirection * 1000000;
 
 	WorldContextObject->GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
+}
+
+FVector2D UTavernBuilderUtils::GetScreenCenter()
+{
+	FVector2D ScreenCenter;
+	GEngine->GameViewport->GetViewportSize(ScreenCenter);
+
+	ScreenCenter /= 2;
+	return ScreenCenter;
+}
+
+FString UTavernBuilderUtils::GetObjCategoryName(EObjectCategory Category)
+{
+	switch (Category)
+	{
+	case Chair:
+		return "Chairs";
+		break;
+	case Table:
+		return "Tables";
+		break;
+	case AllCategories:
+		return "All";
+		break;
+	default:
+		return "Invalid";
+		break;
+	}
 }

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Tavernbuilder/PlayerComponents/ToolComponent.h"
+#include "TavernBuilder/Utils/Structs/ObjectInfo.h"
 #include "AddObjectComponent.generated.h"
 
 /**
@@ -13,39 +14,7 @@ class APlaceableObjects;
 class UAddObjectWidget;
 struct FObjOptionButtonInfo;
 struct FImage;
-
-UENUM(BlueprintType)
-enum EObjectCategory
-{
-	Chair,
-	Table
-};
-
-USTRUCT(BlueprintType)
-struct FObjectInfo
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere)
-	FText Name;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<APlaceableObjects> Class;
-
-	UPROPERTY(EditAnywhere)
-	TArray<UMaterialInstance*> Materials;
-
-	UPROPERTY(EditAnywhere)
-	int32 Cost;
-
-	UPROPERTY(EditAnywhere)
-	TEnumAsByte<EObjectCategory> Category;
-
-	UPROPERTY(EditAnywhere)
-	UTexture2D* Image;
-
-	operator FObjOptionButtonInfo() const;
-};
+enum EObjectCategory;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
@@ -54,7 +23,9 @@ class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FObjectInfo> PlaceableObjectsList;
+	TSubclassOf<UObjectInfoArray> PlaceableObjectsListClass;
+
+	UObjectInfoArray* PlaceableObjectsList;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAddObjectWidget> AddWidgetClass;
@@ -63,7 +34,10 @@ protected:
 	UAddObjectWidget* AddObjWidget;
 
 public:
-	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList; }
+	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList->List; }
+
+	void GetPlaceableObjectsListByCategory(EObjectCategory Category, TArray<FObjectInfo>& OutList) const;
+
 	void SetObjectClass(TSubclassOf<APlaceableObjects> NewClass) { ObjectToSpawn = NewClass; }
 
 protected:
