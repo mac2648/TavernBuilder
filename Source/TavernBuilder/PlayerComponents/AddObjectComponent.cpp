@@ -18,9 +18,16 @@ void UAddObjectComponent::BeginPlay()
 	AddObjWidget->SetAddObjComp(this);
 	AddObjWidget->AddToViewport();
 
-	AddObjWidget->ShowAllObjs();
-
 	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	NumAllPlaceableObjList = PlaceableObjectsList->List.Num();
+	AllPlaceableObjList = new FObjectInfo[NumAllPlaceableObjList];
+	for (int i = 0; i < NumAllPlaceableObjList; i++)
+	{
+		AllPlaceableObjList[i] = PlaceableObjectsList->List[i];
+	}
+
+	PlaceableObjectsList->List.Empty();
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
@@ -35,6 +42,7 @@ void UAddObjectComponent::Execute(const FInputActionValue& Value)
 	FRotator Rotation = FRotator::ZeroRotator;
 
 	APlaceableObjects* SpawnedObj = GetWorld()->SpawnActor<APlaceableObjects>(ObjectToSpawn, SpawnLocation, Rotation);
+	SpawnedObj->Type = SpawnObjectType;
 	UPlaceToolComponent* PlaceTool = Player->GetPlaceToolComp();
 
 	Player->ActivateTool(ETools::MOVE);
@@ -68,15 +76,19 @@ void UAddObjectComponent::GetPlaceableObjectsListByCategory(EObjectCategory Cate
 
 	if (Category == AllCategories)
 	{
-		List = GetPlaceableObjectsList();
+		for (int i = 0; i < NumAllPlaceableObjList; i++)
+		{
+			List.Add(AllPlaceableObjList[i]);
+		}
 		return;
 	}
 
-	for (int i = 0; i < PlaceableObjectsList->List.Num(); i++)
+	for (int i = 0; i < NumAllPlaceableObjList; i++)
 	{
-		if (PlaceableObjectsList->List[i].Category == Category)
+		if (AllPlaceableObjList[i].Category == Category)
 		{
-			List.Add(PlaceableObjectsList->List[i]);
+			//UE_LOG(LogTemp, Warning, TEXT("Adding %s to the list"), *PlaceableObjectsList->List[i].Name.ToString())
+			List.Add(AllPlaceableObjList[i]);
 		}
 	}
 }

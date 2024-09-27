@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TavernBuilder/Objects/PlaceableObjects.h"
+#include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 
 // Sets default values
 APlaceableObjects::APlaceableObjects()
@@ -116,4 +117,9 @@ void APlaceableObjects::SetHighLight(UMaterialInstance* HighLightMaterial)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HighLightHandle);
 	}
+}
+
+inline bool APlaceableObjects::CanAttach(const APlaceableObjects* Other) const
+{
+	return Type == Large && Other->Type == Small;
 }

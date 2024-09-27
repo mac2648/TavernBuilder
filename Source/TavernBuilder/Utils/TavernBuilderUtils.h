@@ -7,6 +7,7 @@
 #include "TavernBuilderUtils.generated.h"
 
 enum EObjectCategory;
+enum EObjectType;
 
 /**
  * 
@@ -28,4 +29,6 @@ public:
 	static FVector2D GetScreenCenter();
 
 	static FString GetObjCategoryName(EObjectCategory Category);
+
+	static void GetObjectCategoriesByType(EObjectType Type, TArray<EObjectCategory>& OutArray);
 };

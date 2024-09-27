@@ -89,6 +89,7 @@ void UAddObjectWidget::ShowAllObjs()
 void UAddObjectWidget::ButtonClick(UObjectOptionOverlay* PressedButton)
 {
 	AddObjComp->SetObjectClass(PressedButton->GetObjectClass());
+	AddObjComp->SetObjectType(PressedButton->GetObjectType());
 	AddObjComp->Execute(FInputActionValue());
 }
 
@@ -124,7 +125,7 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 		NewObjsButtons[i]->SetInfo(List[i]);
 	}
 
-	NumActiveButtons = List.Num() + 1;
+	NumActiveButtons = List.Num();
 
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{

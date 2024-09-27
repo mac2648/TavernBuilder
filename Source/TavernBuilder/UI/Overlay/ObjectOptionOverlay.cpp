@@ -14,7 +14,17 @@ void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 {
 	Info = NewInfo;
 
-	Text->SetText(Info.Name);
+	if (!Info.Name.IsEmpty())
+	{
+		FString Temp = *Info.Name;
+
+		Text->SetText(FText::FromString(Temp));
+	}
+	else
+	{
+		Text->SetText(FText::FromString(""));
+	}
+
 	if (Info.Image)
 	{
 		Image->SetBrushFromTexture(Info.Image);
@@ -25,7 +35,8 @@ void UObjectOptionOverlay::ClearInfo()
 {
 	Info.Clear();
 
-	Text->SetText(Info.Name);
+	Text->SetText(FText::FromString(""));
+	
 	Image->SetBrushFromTexture(Info.Image);
 }
 

@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "PlaceableObjects.generated.h"
 
+enum EObjectType;
+class UAddObjectComponent;
+
 UCLASS()
 class TAVERNBUILDER_API APlaceableObjects : public AActor
 {
@@ -18,6 +21,8 @@ protected:
 	TMap<APlaceableObjects*, FVector> AttachedObjs;
 
 	APlaceableObjects* ParentObj = nullptr;
+
+	EObjectType Type;
 
 private:
 	FTimerHandle HighLightHandle;
@@ -43,10 +48,14 @@ public:
 	void SetHighLight(UMaterialInstance* HighLightMaterial);
 	void RemoveHighlight() { Mesh->SetOverlayMaterial(nullptr); }
 
+	EObjectType GetObjectType() const { return Type; }
+	inline bool CanAttach(const APlaceableObjects* Other) const;
 
 protected:
 	virtual void BeginPlay() override;
 
 	void SetParentObj(APlaceableObjects* Parent);
 	void RemoveParentObj();
+
+	friend UAddObjectComponent;
 };

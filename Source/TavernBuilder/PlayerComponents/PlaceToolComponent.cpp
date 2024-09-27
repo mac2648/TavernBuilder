@@ -88,7 +88,14 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
-			Obj->AttachObj(MovingObj);
+			if (Obj->CanAttach(MovingObj))
+			{
+				Obj->AttachObj(MovingObj);
+			}
+			else
+			{
+				return;
+			}
 		}
 
 		for (APlaceableObjects* Obj : AttachedObjs)

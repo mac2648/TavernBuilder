@@ -76,11 +76,30 @@ FString UTavernBuilderUtils::GetObjCategoryName(EObjectCategory Category)
 	case Table:
 		return "Tables";
 		break;
+	case Kitchen:
+		return "Kitchen";
+		break;
 	case AllCategories:
 		return "All";
 		break;
 	default:
 		return "Invalid";
+		break;
+	}
+}
+
+void UTavernBuilderUtils::GetObjectCategoriesByType(EObjectType Type, TArray<EObjectCategory>& OutArray)
+{
+	OutArray.Empty();
+
+	switch (Type)
+	{
+	case Large:
+		OutArray.Add(Chair);
+		OutArray.Add(Table);
+		break;
+	case Small:
+		OutArray.Add(Kitchen);
 		break;
 	}
 }
