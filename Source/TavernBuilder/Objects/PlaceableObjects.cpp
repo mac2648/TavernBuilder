@@ -48,14 +48,11 @@ void APlaceableObjects::Delete()
 void APlaceableObjects::Move(const FVector& NewWorldLocation)
 {
 	SetActorLocation(NewWorldLocation);
+}
 
-	TArray<APlaceableObjects*> ChildObjs;
-	AttachedObjs.GetKeys(ChildObjs);
-
-	for (APlaceableObjects* Obj : ChildObjs)
-	{
-		Obj->Move(NewWorldLocation + AttachedObjs[Obj]);
-	}
+void APlaceableObjects::Rotate(const FRotator& AddedRotation)
+{
+	AddActorWorldRotation(AddedRotation);
 }
 
 void APlaceableObjects::AttachObj(APlaceableObjects* NewObj)
@@ -65,12 +62,14 @@ void APlaceableObjects::AttachObj(APlaceableObjects* NewObj)
 	AttachedObjs.Add(NewObj, RelativePosition);
 
 	NewObj->SetParentObj(this);
+	NewObj->GetMesh()->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
 }
 
 void APlaceableObjects::DetachObj(APlaceableObjects* RemovedObj)
 {
 	AttachedObjs.Remove(RemovedObj);
 
+	RemovedObj->GetMesh()->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	RemovedObj->RemoveParentObj();
 }
 

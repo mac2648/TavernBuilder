@@ -36,6 +36,7 @@ public:
 
 	void Delete();
 	void Move(const FVector& NewWorldLocation);
+	void Rotate(const FRotator& AddedRotation);
 
 	void AttachObj(APlaceableObjects* NewObj);
 	void DetachObj(APlaceableObjects* RemovedObj);
