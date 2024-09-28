@@ -97,9 +97,56 @@ void APlaceableObjects::GetAttachedObjs(TArray<APlaceableObjects*>& OutObjs) con
 	
 }
 
+void APlaceableObjects::EnableCollision()
+{
+	TArray<UStaticMeshComponent*> AllMeshes;
+
+	GetComponents<UStaticMeshComponent>(AllMeshes);
+
+	for (UStaticMeshComponent* Curr : AllMeshes)
+	{
+		Curr->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
+
+	TArray<APlaceableObjects*> AllAttachedObjs;
+	GetAttachedObjs(AllAttachedObjs);
+
+	for (APlaceableObjects* Obj : AllAttachedObjs)
+	{
+		Obj->EnableCollision();
+	}
+}
+
+void APlaceableObjects::DisableCollision()
+{
+	TArray<UStaticMeshComponent*> AllMeshes;
+
+	GetComponents<UStaticMeshComponent>(AllMeshes);
+
+	for (UStaticMeshComponent* Curr : AllMeshes)
+	{
+		Curr->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	TArray<APlaceableObjects*> AllAttachedObjs;
+	GetAttachedObjs(AllAttachedObjs);
+
+	for (APlaceableObjects* Obj : AllAttachedObjs)
+	{
+		Obj->DisableCollision();
+	}
+}
+
 void APlaceableObjects::SetTempHighLight(UMaterialInstance* HighLightMaterial)
 {
-	Mesh->SetOverlayMaterial(HighLightMaterial);
+	TArray<UStaticMeshComponent*> AllMeshes;
+
+	GetComponents<UStaticMeshComponent>(AllMeshes);
+
+	for (UStaticMeshComponent* Curr : AllMeshes)
+	{
+		Curr->SetOverlayMaterial(HighLightMaterial);
+	}
 
 	if (HighLightHandle.IsValid())
 	{
@@ -111,12 +158,32 @@ void APlaceableObjects::SetTempHighLight(UMaterialInstance* HighLightMaterial)
 
 void APlaceableObjects::SetHighLight(UMaterialInstance* HighLightMaterial)
 {
-	Mesh->SetOverlayMaterial(HighLightMaterial);
+	TArray<UStaticMeshComponent*> AllMeshes;
+
+	GetComponents<UStaticMeshComponent>(AllMeshes);
+
+	for (UStaticMeshComponent* Curr : AllMeshes)
+	{
+		Curr->SetOverlayMaterial(HighLightMaterial);
+	}
 
 	if (HighLightHandle.IsValid())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HighLightHandle);
 	}
+}
+
+void APlaceableObjects::RemoveHighlight()
+{
+	TArray<UStaticMeshComponent*> AllMeshes;
+
+	GetComponents<UStaticMeshComponent>(AllMeshes);
+
+	for (UStaticMeshComponent* Curr : AllMeshes)
+	{
+		Curr->SetOverlayMaterial(nullptr);
+	}
+
 }
 
 inline bool APlaceableObjects::CanAttach(const APlaceableObjects* Other) const

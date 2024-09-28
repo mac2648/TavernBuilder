@@ -46,7 +46,10 @@ public:
 
 	void SetTempHighLight(UMaterialInstance* HighLightMaterial);
 	void SetHighLight(UMaterialInstance* HighLightMaterial);
-	void RemoveHighlight() { Mesh->SetOverlayMaterial(nullptr); }
+	void RemoveHighlight();
+
+	void EnableCollision();
+	void DisableCollision();
 
 	EObjectType GetObjectType() const { return Type; }
 	inline bool CanAttach(const APlaceableObjects* Other) const;
