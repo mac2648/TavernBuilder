@@ -2,12 +2,15 @@
 
 #include "TavernBuilder/Objects/PlaceableObjects.h"
 #include "TavernBuilder/Utils/Enums/ObjectCategory.h"
+#include "TavernBuilder/Utils/Consts/ConstsPlaceableObjects.h"
 
 // Sets default values
 APlaceableObjects::APlaceableObjects()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
+
+	SetActorTickEnabled(false);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
@@ -25,6 +28,10 @@ void APlaceableObjects::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (Falling)
+	{
+		Fall(DeltaTime);
+	}
 }
 
 void APlaceableObjects::Delete()
@@ -40,6 +47,9 @@ void APlaceableObjects::Delete()
 	for (APlaceableObjects* Obj : ChildObjs)
 	{
 		DetachObj(Obj);
+
+		Obj->Falling = true;
+		Obj->SetActorTickEnabled(true);
 	}
 
 	Destroy();
@@ -53,6 +63,34 @@ void APlaceableObjects::Move(const FVector& NewWorldLocation)
 void APlaceableObjects::Rotate(const FRotator& AddedRotation)
 {
 	AddActorWorldRotation(AddedRotation);
+}
+
+void APlaceableObjects::Fall(float DeltaTime)
+{
+	FHitResult HitInfo;
+	FVector End = GetActorLocation() - FVector(0, 0, FallSpeed * DeltaTime);
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	GetWorld()->LineTraceSingleByChannel(HitInfo, GetActorLocation(), End, ECollisionChannel::ECC_Visibility, QueryParams);
+
+	if (AActor* HitActor = HitInfo.GetActor())
+	{
+		SetActorLocation(HitInfo.Location);
+
+		Falling = false;
+		SetActorTickEnabled(false);
+
+		if (APlaceableObjects* HitObj = Cast<APlaceableObjects>(HitActor))
+		{
+			HitObj->AttachObj(this);
+		}
+	}
+	else
+	{
+		SetActorLocation(End);
+	}
 }
 
 void APlaceableObjects::AttachObj(APlaceableObjects* NewObj)
