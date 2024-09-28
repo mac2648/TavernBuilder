@@ -6,6 +6,7 @@ UENUM(BlueprintType)
 enum EObjectType
 {
 	Large,
+	Medium,
 	Small
 };
 

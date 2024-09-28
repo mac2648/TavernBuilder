@@ -186,7 +186,16 @@ void APlaceableObjects::RemoveHighlight()
 
 }
 
-inline bool APlaceableObjects::CanAttach(const APlaceableObjects* Other) const
+bool APlaceableObjects::CanAttach(const APlaceableObjects* Other) const
 {
-	return Type == Large && Other->Type == Small;
+	if (Type == Large && (Other->Type == Small || Other->Type == Medium) )
+	{
+		return true;
+	}
+	else if (Type == Medium && (Other->Type == Small || Other->Type == Medium) )
+	{
+		return true;
+	}
+
+	return false;
 }

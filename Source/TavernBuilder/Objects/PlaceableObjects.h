@@ -52,7 +52,7 @@ public:
 	void DisableCollision();
 
 	EObjectType GetObjectType() const { return Type; }
-	inline bool CanAttach(const APlaceableObjects* Other) const;
+	bool CanAttach(const APlaceableObjects* Other) const;
 
 protected:
 	virtual void BeginPlay() override;
