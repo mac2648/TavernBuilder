@@ -79,6 +79,9 @@ FString UTavernBuilderUtils::GetObjCategoryName(EObjectCategory Category)
 	case Kitchen:
 		return "Kitchen";
 		break;
+	case Barrel:
+		return "Barrel";
+		break;
 	case AllCategories:
 		return "All";
 		break;
@@ -97,6 +100,7 @@ void UTavernBuilderUtils::GetObjectCategoriesByType(EObjectType Type, TArray<EOb
 	case Large:
 		OutArray.Add(Chair);
 		OutArray.Add(Table);
+		OutArray.Add(Barrel);
 		break;
 	case Small:
 		OutArray.Add(Kitchen);

@@ -15,6 +15,7 @@ enum EObjectCategory //When adding a new value remember to add it to the functio
 	Chair,
 	Table,
 	Kitchen,
+	Barrel,
 
 	AllCategories
 };
