@@ -39,7 +39,7 @@ void APlaceableObjects::Delete()
 
 	for (APlaceableObjects* Obj : ChildObjs)
 	{
-		Obj->Delete();
+		DetachObj(Obj);
 	}
 
 	Destroy();
