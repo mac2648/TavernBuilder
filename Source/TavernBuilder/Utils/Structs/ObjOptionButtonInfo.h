@@ -4,16 +4,19 @@
 
 class APlaceableObjects;
 class UTexture2D;
+enum EObjectType;
 
 struct FObjOptionButtonInfo
 {
 	TSubclassOf<APlaceableObjects> Class;
 
-	FText Name;
+	FString Name;
 
 	int32 Cost;
 
 	UTexture2D* Image;
+
+	TEnumAsByte<EObjectType> Type;
 
 public:
 	void Clear();

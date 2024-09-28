@@ -15,6 +15,7 @@ class UAddObjectWidget;
 struct FObjOptionButtonInfo;
 struct FImage;
 enum EObjectCategory;
+enum EObjectType;
 
 UCLASS()
 class TAVERNBUILDER_API UAddObjectComponent : public UToolComponent
@@ -31,7 +32,12 @@ protected:
 	TSubclassOf<UAddObjectWidget> AddWidgetClass;
 
 	TSubclassOf<APlaceableObjects> ObjectToSpawn;
+	EObjectType SpawnObjectType;
+
 	UAddObjectWidget* AddObjWidget;
+
+	FObjectInfo* AllPlaceableObjList;
+	int NumAllPlaceableObjList;
 
 public:
 	const TArray<FObjectInfo>& GetPlaceableObjectsList() const {return PlaceableObjectsList->List; }
@@ -39,6 +45,7 @@ public:
 	void GetPlaceableObjectsListByCategory(EObjectCategory Category, TArray<FObjectInfo>& OutList) const;
 
 	void SetObjectClass(TSubclassOf<APlaceableObjects> NewClass) { ObjectToSpawn = NewClass; }
+	void SetObjectType(EObjectType NewType) { SpawnObjectType = NewType; }
 
 protected:
 	virtual void BeginPlay() override;

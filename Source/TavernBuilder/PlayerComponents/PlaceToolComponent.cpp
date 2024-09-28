@@ -55,16 +55,8 @@ void UPlaceToolComponent::SetMovingObj(APlaceableObjects* ObjToMove)
 	MovingObj = ObjToMove; 
 	if (MovingObj)
 	{
-		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		MovingObj->DisableCollision();
 		MovingObj->SetHighLight(HighLightMaterial);
-
-		TArray<APlaceableObjects*> AttachedObjs;
-		MovingObj->GetAttachedObjs(AttachedObjs);
-
-		for (APlaceableObjects* Obj : AttachedObjs)
-		{
-			Obj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		}
 	}
 }
 
@@ -88,15 +80,17 @@ void UPlaceToolComponent::Execute(const FInputActionValue& Value)
 
 		if (APlaceableObjects* Obj = Cast<APlaceableObjects>(OutHit.GetActor()))
 		{
-			Obj->AttachObj(MovingObj);
+			if (Obj->CanAttach(MovingObj))
+			{
+				Obj->AttachObj(MovingObj);
+			}
+			else
+			{
+				return;
+			}
 		}
 
-		for (APlaceableObjects* Obj : AttachedObjs)
-		{
-			Obj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		}
-
-		MovingObj->GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		MovingObj->EnableCollision();
 		MovingObj->RemoveHighlight();
 		MovingObj = nullptr;
 	}

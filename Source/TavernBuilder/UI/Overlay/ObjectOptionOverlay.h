@@ -12,6 +12,7 @@ class APlaceableObjects;
 class UTextBlock;
 class UButton;
 class UImage;
+enum EObjectType;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEventOptionButtonClick, UObjectOptionOverlay*, ClickedOverlay);
 
@@ -36,7 +37,9 @@ public:
 
 	void CreateUI();
 
-	TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }
+	inline TSubclassOf<APlaceableObjects> GetObjectClass() const { return Info.Class; }
+	inline EObjectType GetObjectType() const { return Info.Type; }
+
 	bool IsValid() const { return Info.IsValid(); }
 
 	FEventOptionButtonClick OnOptionButtonClick;
