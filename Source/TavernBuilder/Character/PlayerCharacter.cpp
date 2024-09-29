@@ -136,14 +136,19 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
 {
 	bool Open = Value.Get<bool>();
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (Open)
 		{
-			PlayerController->SetInputMode(FInputModeGameAndUI());
-			if (ChooseToolWidget)
+			if (!PlaceObjComp->IsMovingObject())
 			{
-				ChooseToolWidget->SetVisibility(ESlateVisibility::Visible);
+				DeactivateCurrentTool();
+				PlayerController->SetInputMode(FInputModeGameAndUI());
+				if (ChooseToolWidget)
+				{
+					ChooseToolWidget->SetVisibility(ESlateVisibility::Visible);
+				}
 			}
 		}
 		else
@@ -164,28 +169,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		return;
 	}
 
-	switch (CurrentTool)
-	{
-	case ADD:
-		AddObjComp->Deactivate();
-		break;
-	case MOVE:
-		PlaceObjComp->Deactivate();
-		break;
-	case DELETE:
-		DeleteObjComp->Deactivate();
-		break;
-	case PAINT:
-		break;
-	case CHANGE_DESIGN:
-		break;
-	case CLEAN:
-		break;
-	case GARBAGE:
-		break;
-	default:
-		break;
-	}
+	DeactivateCurrentTool();
 
 	switch (Tool)
 	{
@@ -211,4 +195,32 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 	}
 
 	CurrentTool = Tool;
+}
+
+void APlayerCharacter::DeactivateCurrentTool()
+{
+	switch (CurrentTool)
+	{
+	case ADD:
+		AddObjComp->Deactivate();
+		break;
+	case MOVE:
+		PlaceObjComp->Deactivate();
+		break;
+	case DELETE:
+		DeleteObjComp->Deactivate();
+		break;
+	case PAINT:
+		break;
+	case CHANGE_DESIGN:
+		break;
+	case CLEAN:
+		break;
+	case GARBAGE:
+		break;
+	default:
+		break;
+	}
+
+	CurrentTool = NONE;
 }

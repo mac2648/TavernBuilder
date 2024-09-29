@@ -23,7 +23,8 @@ enum ETools
 	PAINT,
 	CHANGE_DESIGN,
 	CLEAN,
-	GARBAGE
+	GARBAGE,
+	NONE
 };
 
 UCLASS()
@@ -88,4 +89,5 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void OpenCloseChooseToolWidget(const FInputActionValue& Value);
+	void DeactivateCurrentTool();
 };
