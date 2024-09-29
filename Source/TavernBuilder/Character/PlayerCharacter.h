@@ -66,7 +66,7 @@ protected:
 
 	UUserWidget* ChooseToolWidget = nullptr;
 
-	ETools CurrentTool = ADD;
+	ETools CurrentTool = NONE;
 
 public:
 	APlayerCharacter();

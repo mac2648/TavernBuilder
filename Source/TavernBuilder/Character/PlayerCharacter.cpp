@@ -67,9 +67,6 @@ void APlayerCharacter::BeginPlay()
 	PlaceObjComp->Deactivate();
 	DeleteObjComp->Deactivate();
 
-	//reacivate the add tool as being the base when the game starts
-	AddObjComp->Activate();
-
 	//creates the choose tools widget
 	ChooseToolWidget = CreateWidget<UUserWidget>(Cast<APlayerController>(GetController()), ChooseToolWidgetClass);
 	if (ChooseToolWidget)

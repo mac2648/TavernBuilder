@@ -18,8 +18,6 @@ void UAddObjectComponent::BeginPlay()
 	AddObjWidget->SetAddObjComp(this);
 	AddObjWidget->AddToViewport();
 
-	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
-
 	NumAllPlaceableObjList = PlaceableObjectsList->List.Num();
 	AllPlaceableObjList = new FObjectInfo[NumAllPlaceableObjList];
 	for (int i = 0; i < NumAllPlaceableObjList; i++)
@@ -28,6 +26,8 @@ void UAddObjectComponent::BeginPlay()
 	}
 
 	PlaceableObjectsList->List.Empty();
+	AddObjWidget->ShowAllObjs();
+	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
