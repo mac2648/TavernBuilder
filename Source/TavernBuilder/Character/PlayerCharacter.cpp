@@ -58,6 +58,7 @@ void APlayerCharacter::BeginPlay()
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			Subsystem->AddMappingContext(DefaultMovementMappingContext, 0);
 		}
 	}
 
@@ -144,6 +145,7 @@ void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
 			if (!PlaceObjComp->IsMovingObject())
 			{
 				DeactivateCurrentTool();
+				SetCanMove(false);
 				PlayerController->SetInputMode(FInputModeGameAndUI());
 				if (ChooseToolWidget)
 				{
@@ -153,6 +155,7 @@ void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
 		}
 		else
 		{
+			SetCanMove(true);
 			PlayerController->SetInputMode(FInputModeGameOnly());
 			if (ChooseToolWidget)
 			{
@@ -223,4 +226,24 @@ void APlayerCharacter::DeactivateCurrentTool()
 	}
 
 	CurrentTool = NONE;
+}
+
+void APlayerCharacter::SetCanMove(bool CanMove)
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			if (CanMove)
+			{
+				Subsystem->AddMappingContext(DefaultMovementMappingContext, 0);
+			}
+			else
+			{
+				Subsystem->RemoveMappingContext(DefaultMovementMappingContext);
+			}
+			
+		}
+	}
 }

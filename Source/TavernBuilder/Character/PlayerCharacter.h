@@ -41,6 +41,9 @@ protected:
 	UInputMappingContext* DefaultMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
+	UInputMappingContext* DefaultMovementMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* MoveAction;
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
@@ -90,4 +93,5 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void OpenCloseChooseToolWidget(const FInputActionValue& Value);
 	void DeactivateCurrentTool();
+	void SetCanMove(bool CanMove);
 };
