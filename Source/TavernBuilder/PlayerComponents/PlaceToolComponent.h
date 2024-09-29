@@ -27,6 +27,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void SetMovingObj(APlaceableObjects* ObjToMove);
+	inline bool IsMovingObject() { return MovingObj != nullptr; }
 
 protected:
 	virtual void Execute(const FInputActionValue& Value) override;

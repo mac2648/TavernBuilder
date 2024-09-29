@@ -26,6 +26,7 @@ protected:
 
 private:
 	FTimerHandle HighLightHandle;
+	bool Falling = false;
 	
 public:	
 	APlaceableObjects();
@@ -36,6 +37,8 @@ public:
 
 	void Delete();
 	void Move(const FVector& NewWorldLocation);
+	void Rotate(const FRotator& AddedRotation);
+	void Fall(float DeltaTime);
 
 	void AttachObj(APlaceableObjects* NewObj);
 	void DetachObj(APlaceableObjects* RemovedObj);

@@ -58,6 +58,7 @@ void APlayerCharacter::BeginPlay()
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			Subsystem->AddMappingContext(DefaultMovementMappingContext, 0);
 		}
 	}
 
@@ -65,9 +66,6 @@ void APlayerCharacter::BeginPlay()
 	AddObjComp->Deactivate();
 	PlaceObjComp->Deactivate();
 	DeleteObjComp->Deactivate();
-
-	//reacivate the add tool as being the base when the game starts
-	AddObjComp->Activate();
 
 	//creates the choose tools widget
 	ChooseToolWidget = CreateWidget<UUserWidget>(Cast<APlayerController>(GetController()), ChooseToolWidgetClass);
@@ -136,18 +134,25 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 void APlayerCharacter::OpenCloseChooseToolWidget(const FInputActionValue& Value)
 {
 	bool Open = Value.Get<bool>();
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (Open)
 		{
-			PlayerController->SetInputMode(FInputModeGameAndUI());
-			if (ChooseToolWidget)
+			if (!PlaceObjComp->IsMovingObject())
 			{
-				ChooseToolWidget->SetVisibility(ESlateVisibility::Visible);
+				DeactivateCurrentTool();
+				SetCanMove(false);
+				PlayerController->SetInputMode(FInputModeGameAndUI());
+				if (ChooseToolWidget)
+				{
+					ChooseToolWidget->SetVisibility(ESlateVisibility::Visible);
+				}
 			}
 		}
 		else
 		{
+			SetCanMove(true);
 			PlayerController->SetInputMode(FInputModeGameOnly());
 			if (ChooseToolWidget)
 			{
@@ -164,28 +169,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		return;
 	}
 
-	switch (CurrentTool)
-	{
-	case ADD:
-		AddObjComp->Deactivate();
-		break;
-	case MOVE:
-		PlaceObjComp->Deactivate();
-		break;
-	case DELETE:
-		DeleteObjComp->Deactivate();
-		break;
-	case PAINT:
-		break;
-	case CHANGE_DESIGN:
-		break;
-	case CLEAN:
-		break;
-	case GARBAGE:
-		break;
-	default:
-		break;
-	}
+	DeactivateCurrentTool();
 
 	switch (Tool)
 	{
@@ -211,4 +195,52 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 	}
 
 	CurrentTool = Tool;
+}
+
+void APlayerCharacter::DeactivateCurrentTool()
+{
+	switch (CurrentTool)
+	{
+	case ADD:
+		AddObjComp->Deactivate();
+		break;
+	case MOVE:
+		PlaceObjComp->Deactivate();
+		break;
+	case DELETE:
+		DeleteObjComp->Deactivate();
+		break;
+	case PAINT:
+		break;
+	case CHANGE_DESIGN:
+		break;
+	case CLEAN:
+		break;
+	case GARBAGE:
+		break;
+	default:
+		break;
+	}
+
+	CurrentTool = NONE;
+}
+
+void APlayerCharacter::SetCanMove(bool CanMove)
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			if (CanMove)
+			{
+				Subsystem->AddMappingContext(DefaultMovementMappingContext, 0);
+			}
+			else
+			{
+				Subsystem->RemoveMappingContext(DefaultMovementMappingContext);
+			}
+			
+		}
+	}
 }

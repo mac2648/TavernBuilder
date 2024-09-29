@@ -23,7 +23,8 @@ enum ETools
 	PAINT,
 	CHANGE_DESIGN,
 	CLEAN,
-	GARBAGE
+	GARBAGE,
+	NONE
 };
 
 UCLASS()
@@ -38,6 +39,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, category = "Input")
+	UInputMappingContext* DefaultMovementMappingContext;
 
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* MoveAction;
@@ -62,7 +66,7 @@ protected:
 
 	UUserWidget* ChooseToolWidget = nullptr;
 
-	ETools CurrentTool = ADD;
+	ETools CurrentTool = NONE;
 
 public:
 	APlayerCharacter();
@@ -88,4 +92,6 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void OpenCloseChooseToolWidget(const FInputActionValue& Value);
+	void DeactivateCurrentTool();
+	void SetCanMove(bool CanMove);
 };

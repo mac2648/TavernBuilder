@@ -119,6 +119,6 @@ void UPlaceToolComponent::SecondaryExecute(const FInputActionValue& Value)
 
 	if (MovingObj)
 	{
-		MovingObj->AddActorWorldRotation(FRotator(0, RotationValue * 10, 0));
+		MovingObj->Rotate(FRotator(0, RotationValue * 10, 0));
 	}
 }
