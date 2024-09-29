@@ -76,11 +76,21 @@ FString UTavernBuilderUtils::GetObjCategoryName(EObjectCategory Category)
 	case Table:
 		return "Tables";
 		break;
-	case Kitchen:
+	case KitchenProps: // intentional fallthrough
+	case KitchenBig:
 		return "Kitchen";
 		break;
 	case Barrel:
-		return "Barrel";
+		return "Barrels";
+		break;
+	case Storage:
+		return "Storage";
+		break;
+	case Bed:
+		return "Beds";
+		break;
+	case Fireplace:
+		return "Fireplaces";
 		break;
 	case AllCategories:
 		return "All";
@@ -101,9 +111,13 @@ void UTavernBuilderUtils::GetObjectCategoriesByType(EObjectType Type, TArray<EOb
 		OutArray.Add(Chair);
 		OutArray.Add(Table);
 		OutArray.Add(Barrel);
+		OutArray.Add(Storage);
+		OutArray.Add(Bed);
+		OutArray.Add(Fireplace);
+		OutArray.Add(KitchenBig);
 		break;
 	case Small:
-		OutArray.Add(Kitchen);
+		OutArray.Add(KitchenProps);
 		break;
 	}
 }

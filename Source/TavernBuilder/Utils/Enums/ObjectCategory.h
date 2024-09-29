@@ -15,8 +15,15 @@ enum EObjectCategory //When adding a new value remember to add it to the functio
 {
 	Chair,
 	Table,
-	Kitchen,
+	// For kitchen props
+	KitchenProps,
+	// For kitchen furniture such as ovens and stoves
+	KitchenBig,
 	Barrel,
+	Fireplace,
+	// Storage includes cabinets, shelves, Chests, and fridges
+	Storage,
+	Bed,
 
 	AllCategories
 };
