@@ -5,8 +5,11 @@
 UENUM(BlueprintType)
 enum EObjectType
 {
+	//cannot be stacked
 	Large,
+	//can be placed on large and medium (can stack medium on medium)
 	Medium,
+	//can be placed onlarge and medium (cannot stack small on small)
 	Small
 };
 
@@ -24,6 +27,7 @@ enum EObjectCategory //When adding a new value remember to add it to the functio
 	// Storage includes cabinets, shelves, Chests, and fridges
 	Storage,
 	Bed,
+	Light,
 
 	AllCategories
 };

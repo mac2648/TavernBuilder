@@ -92,6 +92,9 @@ FString UTavernBuilderUtils::GetObjCategoryName(EObjectCategory Category)
 	case Fireplace:
 		return "Fireplaces";
 		break;
+	case Light:
+		return "Lights";
+		break;
 	case AllCategories:
 		return "All";
 		break;
@@ -118,6 +121,7 @@ void UTavernBuilderUtils::GetObjectCategoriesByType(EObjectType Type, TArray<EOb
 		break;
 	case Small:
 		OutArray.Add(KitchenProps);
+		OutArray.Add(Light);
 		break;
 	}
 }
