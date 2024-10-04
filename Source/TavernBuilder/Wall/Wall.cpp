@@ -8,8 +8,7 @@
 AWall::AWall()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 AWall::~AWall()
@@ -28,8 +27,16 @@ void AWall::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
-	DeleteNodes();
-	CreateNodes();
+	if (WallSize != PreviousSize)
+	{
+		DeleteNodes();
+		CreateNodes();
+		PreviousSize = WallSize;
+	}
+	else
+	{
+		MoveNodes();
+	}
 }
 
 // Called every frame
@@ -41,40 +48,91 @@ void AWall::Tick(float DeltaTime)
 
 void AWall::DeleteNodes()
 {
-	for (AWallNode* Node : Nodes)
+	TArray<AWallNode*> NodesToRemove;
+
+	if (WallSize.X <= PreviousSize.X)
 	{
-		Node->Destroy();
+		for (int i = PreviousSize.X - 1; i >= WallSize.X; i--)
+		{
+			for (int j = 0; j < WallSize.Y; j++)
+			{
+				NodesToRemove.Add(Nodes[PreviousSize.Y * i + j]);
+			}
+		}
 	}
 
-	Nodes.Empty();
+	if (WallSize.Y <= PreviousSize.Y)
+	{
+		for (int i = 0; i < WallSize.X; i++)
+		{
+			for (int j = PreviousSize.Y - 1; j >= WallSize.Y; j--)
+			{
+				NodesToRemove.Add(Nodes[PreviousSize.Y * i + j]);
+			}
+		}
+	}
+
+	for (AWallNode* Node : NodesToRemove)
+	{
+		Nodes.Remove(Node);
+		Node->Destroy();
+	}
 }
 
 void AWall::CreateNodes()
 {
-	if (!Nodes.IsEmpty())
-	{
-		DeleteNodes();
-	}
-
 	FVector InitialLocation = GetActorLocation() + FVector(NodeSize/2, 0, NodeSize/2);
 	if (WallNodeClass)
 	{
-		for (int i = 0; i < WallSize.X; i++)
+		if (PreviousSize == FVector2D(0, 0))
 		{
-			for (int j = 0; j < WallSize.Y; j++)
+			AddNodes(0, 0, InitialLocation);
+		}
+		else
+		{
+			if (PreviousSize.X < WallSize.X)
 			{
-				FVector NodeLocation = InitialLocation + FVector(NodeSize * i, 0, NodeSize * j);
-				FActorSpawnParameters SpawnParams;
-
-				AWallNode* NewNode = GetWorld()->SpawnActor<AWallNode>(WallNodeClass, NodeLocation, FRotator::ZeroRotator, SpawnParams);
-
-				if (NewNode)
-				{
-					Nodes.Add(NewNode);
-					NewNode->SetFlags(RF_Transient);
-				}
-
+				AddNodes(PreviousSize.X, 0, InitialLocation);
 			}
+
+			if (PreviousSize.Y < WallSize.Y)
+			{
+				AddNodes(0, PreviousSize.Y, InitialLocation);
+			}
+		}
+	}
+}
+
+void AWall::AddNodes(int XStart, int YStart, const FVector& InitialLocation)
+{
+	for (int i = XStart; i < WallSize.X; i++)
+	{
+		for (int j = YStart; j < WallSize.Y; j++)
+		{
+			FVector NodeLocation = InitialLocation + FVector(NodeSize * i, 0, NodeSize * j);
+			FActorSpawnParameters SpawnParams;
+
+			AWallNode* NewNode = GetWorld()->SpawnActor<AWallNode>(WallNodeClass, NodeLocation, FRotator::ZeroRotator, SpawnParams);
+
+			if (NewNode)
+			{
+				Nodes.Add(NewNode);
+				NewNode->SetFlags(RF_Transient);
+			}
+		}
+	}
+}
+
+void AWall::MoveNodes()
+{
+	FVector InitialLocation = GetActorLocation() + FVector(NodeSize / 2, 0, NodeSize / 2);
+	for (int i = 0; i < WallSize.X; i++)
+	{
+		for (int j = 0; j < WallSize.Y; j++)
+		{
+			FVector NodeLocation = InitialLocation + FVector(NodeSize * i, 0, NodeSize * j);
+
+			Nodes[WallSize.Y * i + j]->SetActorLocation(NodeLocation);
 		}
 	}
 }

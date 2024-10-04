@@ -17,10 +17,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AWallNode> WallNodeClass;
 
+	//defines the number of nodes in the wall
 	UPROPERTY(EditAnywhere, Category = "Size")
 	FVector2D WallSize;
 
 	TArray<AWallNode*> Nodes;
+
+	FVector2D PreviousSize = FVector2D(0, 0);
 	
 public:	
 	// Sets default values for this actor's properties
@@ -35,4 +38,6 @@ protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	void DeleteNodes();
 	void CreateNodes();
+	void MoveNodes();
+	void AddNodes(int XStart, int YStart, const FVector& InitialLocation);
 };
