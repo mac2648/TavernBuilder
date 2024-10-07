@@ -38,6 +38,5 @@ protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	void DeleteNodes();
 	void CreateNodes();
-	void MoveNodes();
 	void AddNodes(int XStart, int YStart, const FVector& InitialLocation);
 };

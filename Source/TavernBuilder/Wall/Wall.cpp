@@ -44,10 +44,6 @@ void AWall::OnConstruction(const FTransform& Transform)
 		CreateNodes();
 		PreviousSize = WallSize;
 	}
-	else
-	{
-		MoveNodes();
-	}
 }
 
 // Called every frame
@@ -130,21 +126,8 @@ void AWall::AddNodes(int XStart, int YStart, const FVector& InitialLocation)
 				Nodes.Add(NewNode);
 				NewNode->SetFlags(RF_Transient);
 				NewNode->SetObjOwner(this);
+				NewNode->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 			}
-		}
-	}
-}
-
-void AWall::MoveNodes()
-{
-	FVector InitialLocation = GetActorLocation() + FVector(NodeSize / 2, 0, NodeSize / 2);
-	for (int i = 0; i < WallSize.X; i++)
-	{
-		for (int j = 0; j < WallSize.Y; j++)
-		{
-			FVector NodeLocation = InitialLocation + FVector(NodeSize * i, 0, NodeSize * j);
-
-			Nodes[WallSize.Y * i + j]->SetActorLocation(NodeLocation);
 		}
 	}
 }
