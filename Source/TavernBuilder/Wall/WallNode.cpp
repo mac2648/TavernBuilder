@@ -2,6 +2,7 @@
 
 
 #include "TavernBuilder/Wall/WallNode.h"
+#include "TavernBuilder/Wall/Wall.h"
 
 // Sets default values
 AWallNode::AWallNode()
@@ -11,6 +12,8 @@ AWallNode::AWallNode()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -27,3 +30,13 @@ void AWallNode::Tick(float DeltaTime)
 
 }
 
+//void AWallNode::Clicked()
+//{
+//	#if WITH_EDITOR
+//	if (OwnerWall)
+//	{
+//		GEditor->SelectNone(false, true);
+//		GEditor->SelectActor(OwnerWall, true, true, true);
+//	}
+//	#endif
+//}
