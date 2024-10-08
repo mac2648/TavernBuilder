@@ -30,13 +30,14 @@ void AWallNode::Tick(float DeltaTime)
 
 }
 
-//void AWallNode::Clicked()
-//{
-//	#if WITH_EDITOR
-//	if (OwnerWall)
-//	{
-//		GEditor->SelectNone(false, true);
-//		GEditor->SelectActor(OwnerWall, true, true, true);
-//	}
-//	#endif
-//}
+void AWallNode::SetMaterial(UMaterialInstance* NewMat, int X, int Y)
+{
+	Mesh->SetMaterial(0, NewMat);
+	Material = Mesh->CreateDynamicMaterialInstance(0);
+
+	if (Material)
+	{
+		Material->SetScalarParameterValue("XCoord", X);
+		Material->SetScalarParameterValue("YCoord", Y);
+	}
+}

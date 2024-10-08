@@ -12,6 +12,7 @@
 #include "TavernBuilder/PlayerComponents/PlaceToolComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "TavernBuilder/PlayerComponents/DeleteToolComponent.h"
+#include "TavernBuilder/PlayerComponents/PaintToolComponent.h"
 
 
 // Sets default values
@@ -45,6 +46,8 @@ APlayerCharacter::APlayerCharacter()
 	PlaceObjComp = CreateDefaultSubobject<UPlaceToolComponent>(TEXT("PlaceToolComp"));
 
 	DeleteObjComp = CreateDefaultSubobject<UDeleteToolComponent>(TEXT("DeleteToolComp"));
+
+	PaintToolComp = CreateDefaultSubobject<UPaintToolComponent>(TEXT("PaintToolComp"));
 }
 
 // Called when the game starts or when spawned
@@ -66,6 +69,7 @@ void APlayerCharacter::BeginPlay()
 	AddObjComp->Deactivate();
 	PlaceObjComp->Deactivate();
 	DeleteObjComp->Deactivate();
+	PaintToolComp->Deactivate();
 
 	//creates the choose tools widget
 	ChooseToolWidget = CreateWidget<UUserWidget>(Cast<APlayerController>(GetController()), ChooseToolWidgetClass);
@@ -183,6 +187,7 @@ void APlayerCharacter::ActivateTool(ETools Tool)
 		DeleteObjComp->Activate();
 		break;
 	case PAINT:
+		PaintToolComp->Activate();
 		break;
 	case CHANGE_DESIGN:
 		break;
@@ -211,6 +216,7 @@ void APlayerCharacter::DeactivateCurrentTool()
 		DeleteObjComp->Deactivate();
 		break;
 	case PAINT:
+		PaintToolComp->Deactivate();
 		break;
 	case CHANGE_DESIGN:
 		break;

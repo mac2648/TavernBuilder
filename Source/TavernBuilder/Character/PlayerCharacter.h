@@ -13,6 +13,7 @@ struct FInputActionValue;
 class UAddObjectComponent;
 class UPlaceToolComponent;
 class UDeleteToolComponent;
+class UPaintToolComponent;
 
 UENUM(BlueprintType)
 enum ETools
@@ -60,6 +61,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UDeleteToolComponent* DeleteObjComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPaintToolComponent* PaintToolComp;
 
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> ChooseToolWidgetClass;

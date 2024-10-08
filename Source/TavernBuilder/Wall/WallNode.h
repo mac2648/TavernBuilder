@@ -20,6 +20,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
 	
+	UMaterialInstanceDynamic* Material;
+
 public:	
 	
 	AWallNode();
@@ -29,6 +31,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void SetMaterial(UMaterialInstance* NewMat, int X, int Y);
 
 	friend AWall;
 };

@@ -30,6 +30,13 @@ void UAddObjectComponent::BeginPlay()
 	AddObjWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UAddObjectComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+
+	delete[] AllPlaceableObjList;
+}
+
 void UAddObjectComponent::Execute(const FInputActionValue& Value)
 {
 	APlayerCharacter* Player = Cast<APlayerCharacter>(GetOwner());

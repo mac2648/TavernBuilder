@@ -131,3 +131,22 @@ void AWall::AddNodes(int XStart, int YStart, const FVector& InitialLocation)
 		}
 	}
 }
+
+void AWall::SetMaterial(UMaterialInstance* NewMat)
+{
+	Material = NewMat;
+
+	FVector InitialLocation = GetActorLocation() + FVector(NodeSize / 2, 0, NodeSize / 2);
+
+	for (int i = 0; i < WallSize.X; i++)
+	{
+		for (int j = 0; j < WallSize.Y; j++)
+		{
+			FVector NodeLocation = InitialLocation + FVector(NodeSize * i, 0, NodeSize * j);
+
+			Nodes[WallSize.Y * i + j]->SetActorLocation(NodeLocation);
+
+			Nodes[WallSize.Y * i + j]->SetMaterial(Material, i, WallSize.Y - 1 - j);
+		}
+	}
+}

@@ -24,12 +24,17 @@ protected:
 	TArray<AWallNode*> Nodes;
 
 	FVector2D PreviousSize = FVector2D(0, 0);
+
+private:
+	UMaterialInstance* Material;
 	
 public:	
 	// Sets default values for this actor's properties
 	AWall();
 	~AWall();
 	virtual void Tick(float DeltaTime) override;
+
+	void SetMaterial(UMaterialInstance* NewMat);
 
 protected:
 	// Called when the game starts or when spawned
