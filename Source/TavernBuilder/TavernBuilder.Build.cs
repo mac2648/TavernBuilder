@@ -8,7 +8,7 @@ public class TavernBuilder : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "SlateCore", "EditorScriptingUtilities", "RedirectingActorEditor" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "SlateCore", "EditorScriptingUtilities", "RedirectingActorEditor", "ObjectPreviewButtonModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd" });
 

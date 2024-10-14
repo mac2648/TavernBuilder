@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TavernBuilder/UI/Overlay/ObjectOptionOverlay.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
@@ -8,15 +7,35 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/OverlaySlot.h"
 #include "TavernBuilder/Utils/Consts/ConstsUI.h"
+#include <exception>
 
-
-void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
+UObjectOptionOverlay::UObjectOptionOverlay()
 {
-	Info = NewInfo;
+	Info = new FObjOptionButtonInfo();
+	ImageSize.X = NewObjImgSizeX;
+	ImageSize.Y = NewObjImgSizeY;
+}
 
-	if (!Info.Name.IsEmpty())
+void UObjectOptionOverlay::SetInfo(const FObjectPreviewInfo* NewInfo)
+{
+	const FObjOptionButtonInfo* NewInfoCasted = static_cast<const FObjOptionButtonInfo*>(NewInfo);
+	if (!NewInfoCasted)
 	{
-		FString Temp = *Info.Name;
+		throw("expected FObjOptionButtonInfo, but received something else");
+	}
+
+	if (FObjOptionButtonInfo* CastedInfo = static_cast<FObjOptionButtonInfo*>(Info))
+	{
+		*CastedInfo = *NewInfoCasted;
+	}
+	else
+	{
+		throw("expected info to be FObjOptionButtonInfo, but static cast failed");
+	}
+
+	if (!Info->Name.IsEmpty())
+	{
+		FString Temp = Info->Name;
 
 		Text->SetText(FText::FromString(Temp));
 	}
@@ -25,74 +44,8 @@ void UObjectOptionOverlay::SetInfo(const FObjOptionButtonInfo& NewInfo)
 		Text->SetText(FText::FromString(""));
 	}
 
-	if (Info.Image)
+	if (Info->Image)
 	{
-		Image->SetBrushFromTexture(Info.Image);
+		Image->SetBrushFromTexture(Info->Image);
 	}
-}
-
-void UObjectOptionOverlay::ClearInfo()
-{
-	Info.Clear();
-
-	Text->SetText(FText::FromString(""));
-	
-	Image->SetBrushFromTexture(Info.Image);
-}
-
-void UObjectOptionOverlay::CreateUI()
-{
-	Image = NewObject<UImage>(this);
-	if (Image)
-	{
-		AddChild(Image);
-
-		Image->Brush.ImageSize.X = NewObjImgSizeX;
-		Image->Brush.ImageSize.Y = NewObjImgSizeY;
-
-		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Image->Slot))
-		{
-			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Bottom);
-			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
-		}
-	}
-
-	Text = NewObject<UTextBlock>(this);
-	if (Text)
-	{
-		AddChild(Text);
-
-		Text->SetColorAndOpacity(FSlateColor(FColor::Black));
-
-		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Text->Slot))
-		{
-			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Top);
-			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Center);
-		}
-	}
-
-	Button = NewObject<UButton>(this);
-	if (Button)
-	{
-		AddChild(Button);
-
-		if (UOverlaySlot* OverlaySlot = Cast<UOverlaySlot>(Button->Slot))
-		{
-			OverlaySlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			OverlaySlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-		}
-
-		FButtonStyle ButtonStyle = Button->GetStyle();
-		ButtonStyle.Normal.TintColor = FSlateColor(FColor(1, 1, 1, 0));
-		ButtonStyle.Hovered.TintColor = FSlateColor(FColor(1, 1, 1, 0.1));
-		ButtonStyle.Pressed.TintColor = FSlateColor(FColor(1, 1, 1, 0.2));
-		Button->SetStyle(ButtonStyle);
-
-		Button->OnClicked.AddDynamic(this, &UObjectOptionOverlay::OptionButtonClick);
-	}
-}
-
-void UObjectOptionOverlay::OptionButtonClick()
-{
-	OnOptionButtonClick.Broadcast(this);
 }

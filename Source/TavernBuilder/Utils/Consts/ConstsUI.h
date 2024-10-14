@@ -18,8 +18,6 @@ const int NewObjBntPerRow = 4;
 const int NewObjSliderHeight = 800;
 const int NewObjSliderWidth = 20;
 
-#define NewObjUIHeight(NUM_ACTIVE_OBJ) NewObjBntDistY * (NUM_ACTIVE_OBJ / NewObjBntPerRow - 2)
-
 const int CategoryBntSizeX = 150;
 const int CategoryBntSizeY = 70;
 

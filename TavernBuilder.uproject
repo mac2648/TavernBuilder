@@ -11,13 +11,22 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"CoreUObject",
-				"UMG"
+				"UMG",
+				"ObjectPreviewButtonModule"
 			]
 		},
 		{
 			"Name": "RedirectingActorEditor",
 			"Type": "Editor",
 			"LoadingPhase": "PostEngineInit"
+		},
+		{
+			"Name": "ObjectPreviewButtonModule",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
