@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "ObjectPreviewButtonModule/UserWidget/ObjectPreviewWidget.h"
 #include "TavernBuilder/Utils/Consts/ConstsUI.h"
 #include "TavernBuilder/Utils/Enums/ObjectCategory.h"
 #include "AddObjectWidget.generated.h"
@@ -14,33 +14,21 @@ class USlider;
 class UChooseObjCategoryOverlay;
 
 UCLASS()
-class TAVERNBUILDER_API UAddObjectWidget : public UUserWidget
+class TAVERNBUILDER_API UAddObjectWidget : public UObjectPreviewWidget
 {
 	GENERATED_BODY()
-	
-	UObjectOptionOverlay* NewObjsButtons[NumNewObjBnt];
 
 	UAddObjectComponent* AddObjComp;
-
-	USlider* Slider;
-
-	UChooseObjCategoryOverlay* Categories[AllCategories + 1];
-
-	int NumActiveButtons = 0;
 
 public:
 	void SetAddObjComp(UAddObjectComponent* Comp) { AddObjComp = Comp; }
 	void ShowAllObjs();
+	void ApplyCatagory(UChooseObjCategoryOverlay* CategoryButton);
 
 protected:
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
-	void MoveButtons(float Percent);
+	virtual void ButtonClick(UObjectPreviewButton* PressedButton) override;
 
-	UFUNCTION()
-	void ButtonClick(UObjectOptionOverlay* PressedButton);
-
-	UFUNCTION()
-	void ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay);
+	virtual void ApplyTextButton(UTextButton* ClickedOverlay) override;
 };

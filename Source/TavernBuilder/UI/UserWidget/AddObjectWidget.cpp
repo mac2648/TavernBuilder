@@ -14,107 +14,64 @@
 
 void UAddObjectWidget::NativeConstruct()
 {
-	UPanelWidget* RootWidget = Cast<UPanelWidget>(GetRootWidget());
+	ObjButtonClass = TSubclassOf<UObjectPreviewButton>(UObjectOptionOverlay::StaticClass());
+	ObjButtons = new UObjectPreviewButton*[NumNewObjBnt];
+	NumObjButtons = NumNewObjBnt;
 
-	Slider = WidgetTree->ConstructWidget<USlider>();
+	TextButtonClass = TSubclassOf<UTextButton>(UChooseObjCategoryOverlay::StaticClass());
+	TextButtons = new UTextButton*[AllCategories + 1];
+	NumTextButtons = AllCategories + 1;
 
-	if (Slider)
-	{
-		RootWidget->AddChild(Slider);
+	ObjBntIniPos = FVector2D(NewObjBntIniPosX, NewObjBntIniPosY);
+	ObjBntDis = FVector2D(NewObjBntDistX, NewObjBntDistY);
+	ObjBntSize = FVector2D(NewObjBntSizeX, NewObjBntSizeY);
 
-		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(Slider->Slot);
+	TextBntIntPos = FVector2D(CatBntPosX, CatBntPosY);
+	TextBntDistanceY = CatBntDisY;
+	TextBntSize = FVector2D(CategoryBntSizeX, CategoryBntSizeY);
 
-		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
-		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntPerRow * NewObjBntDistX + 100, NewObjBntIniPosY));
-		PanelSlot->SetSize(FVector2D(NewObjSliderWidth, NewObjSliderHeight));
+	SliderSize = FVector2D(NewObjSliderWidth, NewObjSliderHeight);
+	NumObjPerRow = NewObjBntPerRow;
 
-		Slider->SetOrientation(EOrientation::Orient_Vertical);
-
-		FSliderStyle Style = Slider->GetWidgetStyle();
-		Style.SetBarThickness(NewObjSliderWidth);
-		Slider->SetWidgetStyle(Style);
-
-		FWidgetTransform Transform = Slider->GetRenderTransform();
-		Transform.Angle = 180.0f;
-		Slider->SetRenderTransform(Transform);
-
-		Slider->OnValueChanged.AddDynamic(this, &UAddObjectWidget::MoveButtons);
-
-	}
-
-	for (int i = 0; i < NumNewObjBnt; i++)
-	{
-		NewObjsButtons[i] = WidgetTree->ConstructWidget<UObjectOptionOverlay>(UObjectOptionOverlay::StaticClass());
-
-		RootWidget->AddChild(NewObjsButtons[i]);
-
-		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
-
-		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
-
-		int NewObkButtonPositionX = NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow);
-		int NewObkButtonPositionY = NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow);
-
-		PanelSlot->SetPosition(FVector2D(NewObkButtonPositionX, NewObkButtonPositionY));
-		PanelSlot->SetSize(FVector2D(NewObjBntSizeX, NewObjBntSizeY));
-
-		NewObjsButtons[i]->CreateUI();
-
-		NewObjsButtons[i]->OnOptionButtonClick.AddDynamic(this, &UAddObjectWidget::ButtonClick);
-	}
+	Super::NativeConstruct();
 
 	for (EObjectCategory i = EObjectCategory::Chair; i <= AllCategories; i++)
 	{
-		Categories[i] = WidgetTree->ConstructWidget<UChooseObjCategoryOverlay>();
-
-		RootWidget->AddChild(Categories[i]);
-
-		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(Categories[i]->Slot);
-
-		PanelSlot->SetAnchors(FAnchors(0.5, 0.5));
-		PanelSlot->SetPosition(FVector2D(CatBntPosX, CatBntPosY + (CatBntDisY * i) ));
-		PanelSlot->SetSize(FVector2D(CategoryBntSizeX, CategoryBntSizeY));
-
-		Categories[i]->Initialize(i);
-
-		Categories[i]->OnCategoryClick.AddDynamic(this, &UAddObjectWidget::ApplyCatagory);
+		if (UChooseObjCategoryOverlay* CategoryButton = Cast<UChooseObjCategoryOverlay>(TextButtons[i]))
+		{
+			CategoryButton->SetCategory(i);
+			FText CategoryText = FText::FromString(UTavernBuilderUtils::GetObjCategoryName(i));
+			CategoryButton->SetText(CategoryText);
+		}
 	}
 }
 
 void UAddObjectWidget::ShowAllObjs()
 {
-	ApplyCatagory(Categories[AllCategories]);
+	ApplyCatagory(Cast<UChooseObjCategoryOverlay>(TextButtons[AllCategories]));
 }
 
-void UAddObjectWidget::ButtonClick(UObjectOptionOverlay* PressedButton)
+void UAddObjectWidget::ButtonClick(UObjectPreviewButton* PressedButton)
 {
-	AddObjComp->SetObjectClass(PressedButton->GetObjectClass());
-	AddObjComp->SetObjectType(PressedButton->GetObjectType());
-	AddObjComp->Execute(FInputActionValue());
-}
-
-void UAddObjectWidget::MoveButtons(float Percent)
-{
-	for (int i = 0; i < NumNewObjBnt; i++)
+	if (UObjectOptionOverlay* PressedBnt = Cast<UObjectOptionOverlay>(PressedButton))
 	{
-		UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(NewObjsButtons[i]->Slot);
-
-		int UIHeight = NewObjUIHeight(NumActiveButtons);
-		if (UIHeight <= 0)
-		{
-			UIHeight = 0;
-		}
-
-		PanelSlot->SetPosition(FVector2D(NewObjBntIniPosX + NewObjBntDistX * (i % NewObjBntPerRow), NewObjBntIniPosY + NewObjBntDistY * (i / NewObjBntPerRow) - Percent * UIHeight));
+		AddObjComp->SetObjectClass(PressedBnt->GetObjectClass());
+		AddObjComp->SetObjectType(PressedBnt->GetObjectType());
+		AddObjComp->Execute(FInputActionValue());
 	}
+}
+
+void UAddObjectWidget::ApplyTextButton(UTextButton* ClickedOverlay)
+{
+	ApplyCatagory(Cast<UChooseObjCategoryOverlay>(ClickedOverlay));
 }
 
 void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 {
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{
-		NewObjsButtons[i]->ClearInfo();
-		NewObjsButtons[i]->SetVisibility(ESlateVisibility::Visible);
+		ObjButtons[i]->ClearInfo();
+		ObjButtons[i]->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	TArray<FObjectInfo> List; 
@@ -122,16 +79,17 @@ void UAddObjectWidget::ApplyCatagory(UChooseObjCategoryOverlay* ClickedOverlay)
 
 	for (int i = 0; i < List.Num() && i < NumNewObjBnt; i++)
 	{
-		NewObjsButtons[i]->SetInfo(List[i]);
+		FObjOptionButtonInfo ObjInfo = FObjOptionButtonInfo(List[i]);
+		ObjButtons[i]->SetInfo(&ObjInfo);
 	}
 
 	NumActiveButtons = List.Num();
 
 	for (int i = 0; i < NumNewObjBnt; i++)
 	{
-		if (!NewObjsButtons[i]->IsValid())
+		if (!(ObjButtons[i]->IsValid()))
 		{
-			NewObjsButtons[i]->SetVisibility(ESlateVisibility::Hidden);
+			ObjButtons[i]->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 
