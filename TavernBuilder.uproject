@@ -21,6 +21,11 @@
 			"LoadingPhase": "PostEngineInit"
 		},
 		{
+			"Name": "RedirectingActorModule",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "ObjectPreviewButtonModule",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",

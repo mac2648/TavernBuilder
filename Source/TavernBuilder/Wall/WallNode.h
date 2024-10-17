@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "RedirectingActorEditor/EditorMode/RedirectingActorInterface.h"
+#include "RedirectingActorModule/Interface/RedirectingActorInterface.h"
 #include "WallNode.generated.h"
 
 const float NodeSize = 20;

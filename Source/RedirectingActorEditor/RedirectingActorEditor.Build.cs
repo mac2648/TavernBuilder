@@ -6,7 +6,7 @@ public class RedirectingActorEditor : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange( new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UnrealEd", "EditorScriptingUtilities", "EditorFramework", "SlateCore" });
+        PublicDependencyModuleNames.AddRange( new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UnrealEd", "EditorScriptingUtilities", "EditorFramework", "SlateCore", "RedirectingActorModule" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
     }

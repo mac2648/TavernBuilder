@@ -1,6 +1,6 @@
 #include "RedirectingActorEditor/EditorMode/RedirectingActorMode.h"
 #include "EditorModeRegistry.h"
-#include "RedirectingActorEditor/EditorMode/RedirectingActorInterface.h"
+#include "RedirectingActorModule/Interface/RedirectingActorInterface.h"
 
 FRedirectingActorMode::FRedirectingActorMode()
 {

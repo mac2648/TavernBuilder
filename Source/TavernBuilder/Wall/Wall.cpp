@@ -3,8 +3,6 @@
 
 #include "TavernBuilder/Wall/Wall.h"
 #include "TavernBuilder/Wall/WallNode.h"
-#include "EditorModeManager.h"
-#include "RedirectingActorEditor/EditorMode/RedirectingActorMode.h"
 
 // Sets default values
 AWall::AWall()
@@ -22,20 +20,12 @@ AWall::~AWall()
 void AWall::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	CreateNodes();
 }
 
 void AWall::OnConstruction(const FTransform& Transform)
 {
-	static bool First = true;
-
-	if (First)
-	{
-		FEditorModeTools& ModeTools = GLevelEditorModeTools();
-		ModeTools.ActivateMode(FRedirectingActorMode::EM_RedirectingActorMode);
-		First = false;
-	}
-
 	Super::OnConstruction(Transform);
 
 	if (WallSize != PreviousSize)
